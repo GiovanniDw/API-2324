@@ -13,11 +13,7 @@ export default defineConfig({
   },
   plugins: [commonjs(),],
   optimizeDeps: {exclude: ["fsevents"]},
-  publicDir: 'src/public',
-  server: {
-    port: 3000,
-    origin: 'http://localhost:3000'
-  },
+  publicDir: 'public',
   hmr: {
     clientPort: 5173
   },
@@ -35,7 +31,7 @@ export default defineConfig({
     manifest: true,
     ssrManifest: true,
     rollupOptions: {
-      input: './src/assets/main.js',
+      input: './src/main.js',
     }
   },
   prerender: true

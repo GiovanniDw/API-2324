@@ -2,15 +2,21 @@
   "name": "api-2324",
   "version": "1.0.0",
   "description": "In dit vier weken durende vak zullen we de kracht van het web ervaren en kijken hoe we (mobiele) web apps kunnen maken die\nnet zo aantrekkelijk zijn als native mobiele apps.",
+  "license": "MIT",
   "type": "module",
   "scripts": {
-    "lint": "eslint . --ext .js,.liquid"
+    "dev": "npm-run-all --parallel dev:*",
+    "dev:server": "NODE_ENV=development nodemon server.js --ext js,liquid",
+    "dev:client": "vite --config vite.config.js",
+    "start": "NODE_ENV=production node server/server.js",
+    "build:server": "vite build --ssr server/server.js",
+    "build:client": "vite build --emptyOutDir false --ssrManifest",
+    "lint": "eslint . --ext .js,.liquid",
+    "format": "prettier --write src/"
   },
-  "license": "MIT",
   "dependencies": {
     "@tinyhttp/app": "^2.2.3",
     "@tinyhttp/logger": "^2.0.0",
-    "liquidjs": "^10.10.2",
     "vite": "^5.2.6",
     "vite-plugin-eslint": "^1.8.1"
   },
@@ -18,9 +24,11 @@
     "@rollup/plugin-commonjs": "^25.0.7",
     "dotenv": "^16.4.5",
     "eslint": "^8.57.0",
+    "liquidjs": "^10.10.2",
     "nodemon": "^3.1.0",
     "npm-run-all": "^4.1.5",
     "sirv": "^2.0.4",
+    "socket.io": "^4.7.5",
     "vite-express": "^0.16.0"
   }
 }

@@ -5,14 +5,15 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "dev": "npm-run-all --parallel dev:*",
-    "dev:server": "NODE_ENV=development nodemon server.js --ext js,liquid",
+    "dev": "nodemon --inspect server/server.js -w server/ src/",
+    "devOld": "NODE_ENV=development npm-run-all --parallel dev:*",
+    "dev:server": "nodemon server.js --ext js,liquid",
     "dev:client": "vite --config vite.config.js",
     "start": "NODE_ENV=production node server/server.js",
     "build:server": "vite build --ssr server/server.js",
     "build:client": "vite build --emptyOutDir false --ssrManifest",
     "lint": "eslint . --ext .js,.liquid",
-    "format": "prettier --write src/"
+    "format": "prettier --write src/ server/"
   },
   "dependencies": {
     "@tinyhttp/app": "^2.2.3",
@@ -22,8 +23,11 @@
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^25.0.7",
+    "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "eslint": "^8.57.0",
+    "express": "^4.19.2",
+    "express-session": "^1.18.0",
     "liquidjs": "^10.10.2",
     "nodemon": "^3.1.0",
     "npm-run-all": "^4.1.5",

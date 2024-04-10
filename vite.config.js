@@ -3,17 +3,17 @@ import commonjs from '@rollup/plugin-commonjs';
 import path from 'path';
 export default defineConfig({
   appType: "custom",
-  base: "./",
+  base: "/",
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, './src'),
-      '@assets': path.resolve(__dirname, './src/assets'),
-      '@components': path.resolve(__dirname, './src/components'),
+      '~': path.resolve(__dirname, './src'),
+      '~~': path.resolve(__dirname, './'),
+      '@': path.resolve(__dirname, './server'),
     },
   },
   plugins: [commonjs(),],
   optimizeDeps: {exclude: ["fsevents"]},
-  publicDir: 'public',
+  publicDir: './public',
   hmr: {
     clientPort: 5173
   },
@@ -23,6 +23,10 @@ export default defineConfig({
   ssr: {
     target: 'node'
   },
+  server: {
+    port: 5173,
+    origin: 'http://localhost:5173',
+  },
   build: {
     outDir: 'build',
     assetsDir: 'assets',
@@ -30,6 +34,7 @@ export default defineConfig({
     minify: true,
     manifest: true,
     ssrManifest: true,
+    ssr: './server/server.js',
     rollupOptions: {
       input: './src/main.js',
     }

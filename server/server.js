@@ -28,6 +28,7 @@ const CorsOptions = {
 }
 
 const engine = new Liquid({
+  root: __dirname, // for layouts and partials
   extname: '.liquid'
 })
 
@@ -36,7 +37,7 @@ const engine = new Liquid({
 // });
 
 app.engine('liquid', engine.express())
-app.set('views', '../views') // specify the views directory
+app.set('views', ['./views']) // specify the views directory
 app.set('view engine', 'liquid') // set liquid to default
 
 app.use(cors(CorsOptions))
@@ -57,7 +58,7 @@ app.get('/', async (req, res) => {
 
   console.log(data)
 
-  return res.send(renderTemplate('index.liquid', data))
+  return res.send(renderTemplate('views/index.liquid', data));
   // return res.send(renderTemplate('views/index.liquid', { title: 'Home' }));
 })
 
@@ -67,7 +68,7 @@ const renderTemplate = (template, data) => {
     ...data
   }
 
-  return engine.renderFileSync(`views/${template}`, templateData)
+  return engine.renderFileSync(`${template}`, templateData)
 }
 
 ViteExpress.listen(app, PORT, () => {

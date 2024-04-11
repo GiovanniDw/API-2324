@@ -5,17 +5,16 @@ import session from 'express-session'
 import ViteExpress from 'vite-express'
 import cors from 'cors'
 import http from 'http'
-
-
-
-
-
+import path from 'node:path'
+import { fileURLToPath } from "node:url";
 import { Liquid } from 'liquidjs'
-
 
 // import routes from '@/router/index.js'
 
 const PORT = process.env.PORT || 3000
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
 const app = express()
 
@@ -32,14 +31,13 @@ const engine = new Liquid({
   extname: '.liquid'
 })
 
-
 // const server = http.createServer(app).listen(PORT,"0.0.0.0", () => {
 //   console.log(`Server is listeningon ${PORT}!`);
 // });
 
-app.engine('liquid', engine.express()); 
-app.set('views', 'views');            // specify the views directory
-app.set('view engine', 'liquid');       // set liquid to default
+app.engine('liquid', engine.express())
+app.set('views', '../views') // specify the views directory
+app.set('view engine', 'liquid') // set liquid to default
 
 app.use(cors(CorsOptions))
 // app.use(sessionMiddleware);
@@ -47,8 +45,8 @@ app.use(cors(CorsOptions))
 app.options('*', cors(CorsOptions))
 app.use(express.json())
 
-app.use('/', express.static('public'))
-app.use('/', express.static('src'))
+app.use('/', express.static(path.join(__dirname, '../public')))
+app.use('/', express.static(path.join(__dirname, '../src')))
 
 // app.use(routes)
 
@@ -72,9 +70,6 @@ const renderTemplate = (template, data) => {
   return engine.renderFileSync(`views/${template}`, templateData)
 }
 
-
-
 ViteExpress.listen(app, PORT, () => {
-  console.log(`Server is listening on port ${PORT}...`);
-});
-
+  console.log(`Server is listening on port ${PORT}...`)
+})

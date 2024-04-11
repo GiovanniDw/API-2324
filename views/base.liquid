@@ -2,6 +2,8 @@
   <head>
     {% block head %}
     <title>API | Giovanni</title>
+    <meta name="author" content="Giovanni Dwidjosewojo">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {% endblock %} {% if NODE_ENV == "development" %}
     <script type="module" src="http://localhost:3000/@vite/client" defer></script>
     <script type="module" src="http://localhost:3000/src/main.js" defer></script>
@@ -14,7 +16,7 @@
   </head>
 
   <body>
-    {{ NODE_ENV }}
+    {% render './partials/nav.liquid' %}
     {% block content %} {% endblock %}
   </body>
 </html>

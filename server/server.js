@@ -1,3 +1,4 @@
+
 import 'dotenv/config'
 
 import express from 'express'
@@ -8,8 +9,8 @@ import http from 'http'
 import path from 'node:path'
 import { fileURLToPath } from "node:url";
 import { Liquid } from 'liquidjs'
-
-// import routes from '@/router/index.js'
+import { renderTemplate } from './utils.js';
+import routes from './router/index.js'
 
 const PORT = process.env.PORT || 3000
 
@@ -49,27 +50,42 @@ app.use(express.json())
 app.use('/', express.static(path.join(__dirname, '../public')))
 app.use('/', express.static(path.join(__dirname, '../src')))
 
-// app.use(routes)
+app.use(routes)
 
-app.get('/', async (req, res) => {
-  // const movieData = await getMovies();
-  const data = { title: 'Movies', movieData: 'data' }
-  // const render = renderTemplate('index.liquid', data);
+// app.get('/', async (req, res, next) => {
+//   // const movieData = await getMovies();
+//   const data = { title: 'Movies', movieData: 'data' }
+//   // const render = renderTemplate('index.liquid', data);
 
-  console.log(data)
+//   console.log(data)
 
-  return res.send(renderTemplate('views/index.liquid', data));
-  // return res.send(renderTemplate('views/index.liquid', { title: 'Home' }));
-})
+//   return res.send(renderTemplate('views/index.liquid', data));
+//   // return res.send(renderTemplate('views/index.liquid', { title: 'Home' }));
+// })
 
-const renderTemplate = (template, data) => {
-  const templateData = {
-    NODE_ENV: process.env.NODE_ENV || 'production',
-    ...data
-  }
 
-  return engine.renderFileSync(`${template}`, templateData)
-}
+app.get("*", function (req, res, next) {
+  let err = new Error(`${req.ip} tried to reach ${req.originalUrl}`); // Tells us which IP tried to reach a particular URL
+  err.statusCode = 404;
+  err.shouldRedirect = true; //New property on err so that our middleware will redirect
+  next();
+});
+
+app.use((req, res, next) => {
+  // Make `user` and `authenticated` available in templates
+  res.locals.user = req.user;
+  res.locals.authenticated = !req.user.anonymous;
+  next();
+});
+
+app.use((err, req, res, next) => {
+  res.status(err.status || 500);
+  // res.render("error.liquid", {
+  //   layout: "base.liquid",
+  //   message: err.message,
+  //   error: err.status,
+  // });
+});
 
 ViteExpress.listen(app, PORT, () => {
   console.log(`Server is listening on port ${PORT}...`)

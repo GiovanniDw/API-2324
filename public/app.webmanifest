@@ -1,6 +1,6 @@
 {
- "name": "BrowserT",
- "short_name": "BrowserT",
+ "name": "API",
+ "short_name": "API",
  "start_url": ".",
  "display": "standalone",
  "icons": [

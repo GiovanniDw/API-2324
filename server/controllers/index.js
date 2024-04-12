@@ -1,18 +1,23 @@
+import { renderTemplate } from '../utils.js';
+
 
 export const homeController = async (req, res, next) => {
   const { username, email, password, name, id } = req.body;
 
   try {
-    res.render("login.njk", {
-      layout: "base.njk",
-    });
+    const data = { title: 'Movies', movieData: 'data' }
+  // const render = renderTemplate('index.liquid', data);
+
+  console.log(data)
+
+  return res.send(renderTemplate('views/index.liquid', data));
   } catch (err) {
     let data = {
-      error: { message: err },
-      layout: "base.njk",
+      error: { message: err }
     };
-    res.render("login.njk", data);
-    next();
+    
+    return res.send(renderTemplate('views/index.liquid', data));
   } finally {
+    next();
   }
 };

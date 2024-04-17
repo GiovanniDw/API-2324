@@ -8,10 +8,13 @@ import cors from 'cors'
 import http from 'http'
 import path from 'node:path'
 import { fileURLToPath } from "node:url";
-import { Liquid } from 'liquidjs'
+import { Liquid } from 'liquidjs';
+import logger from "morgan";
 import { renderTemplate } from './utils.js';
 import routes from './router/index.js'
-
+import passport from "./config/passport.js";
+// import mongoose from "./config/middleware/mongoose.js";
+import mongoose from 'mongoose';
 const PORT = process.env.PORT || 3000
 
 const __filename = fileURLToPath(import.meta.url)
@@ -38,9 +41,9 @@ const engine = new Liquid({
 // });
 
 app.engine('liquid', engine.express())
-app.set('views', ['./views']) // specify the views directory
+app.set('views', path.join(__dirname, './views')) // specify the views directory
 app.set('view engine', 'liquid') // set liquid to default
-
+app.use(logger("dev"));
 app.use(cors(CorsOptions))
 // app.use(sessionMiddleware);
 // app.use(cookieParser())
@@ -50,6 +53,17 @@ app.use(express.json())
 app.use('/', express.static(path.join(__dirname, '../public')))
 app.use('/', express.static(path.join(__dirname, '../src')))
 
+
+mongoose
+  .connect(process.env.MONGO_DB, {
+    dbName: process.env.DB_NAME,
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => console.log('Mongoose connected'))
+  .catch((err) => console.log(err));
+
+passport(app);
 app.use(routes)
 
 // app.get('/', async (req, res, next) => {
@@ -64,10 +78,12 @@ app.use(routes)
 // })
 
 
-app.get("*", function (req, res, next) {
+app.get("*", (req, res, next) => {
+
   let err = new Error(`${req.ip} tried to reach ${req.originalUrl}`); // Tells us which IP tried to reach a particular URL
   err.statusCode = 404;
-  err.shouldRedirect = true; //New property on err so that our middleware will redirect
+  err.shouldRedirect = true;
+  console.log(err) //New property on err so that our middleware will redirect
   next();
 });
 
@@ -78,7 +94,7 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use((err, req, res, next) => {
+app.use( (err, req, res, next) => {
   res.status(err.status || 500);
   // res.render("error.liquid", {
   //   layout: "base.liquid",

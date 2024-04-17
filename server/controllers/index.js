@@ -10,7 +10,7 @@ export const homeController = async (req, res, next) => {
 
   console.log(data)
 
-  return res.send(renderTemplate('views/index.liquid', data));
+  res.render('index', data);
   } catch (err) {
     let data = {
       error: { message: err }

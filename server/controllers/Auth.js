@@ -7,6 +7,7 @@ import User from '../models/User.js'
 // import jwt from 'passport-jwt';
 // import { Error } from 'mongoose';
 
+const maxAge = 24 * 60 * 60;
 
 const createJWT = (id) => {
   return jwt.sign({ id }, 'chatroom secret', {
@@ -37,6 +38,32 @@ const alertError = (err) => {
   return errors;
 };
 
+export const signinup = async (req,res,next) => {
+  let { username, password } = req.body;
+  try {
+    let userExists = await User.findByUsername(username)
+
+    if (userExists) {
+      let user = userExists
+      let token = createJWT(user._id);
+      console.log(token);
+      res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 });
+    } else {
+      
+    }
+
+
+    console.log(userExists)
+
+
+  } catch (error) {
+    console.log(error)
+    let errors = alertError(error);
+    console.log(errors)
+  }
+  
+
+}
 
 
 
@@ -47,13 +74,13 @@ export const register = async (req, res, next) => {
       title: 'Welcome'
     }
 
-    res.send(renderTemplate('views/register.liquid', data))
+    res.render('register', data)
   } catch (err) {
     let data = {
       error: { message: err },
       layout: 'base.liquid'
     }
-    res.send(renderTemplate('views/register.liquid', data))
+    res.render('register', data)
     // res.render('register.liquid', data);
     next()
   }

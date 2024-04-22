@@ -10,12 +10,15 @@ import path from 'node:path'
 import { fileURLToPath } from "node:url";
 import { Liquid } from 'liquidjs';
 import logger from "morgan";
+import { Server } from 'socket.io';
+
 import { renderTemplate } from './utils.js';
 import routes from './router/index.js'
 import passport from "./config/passport.js";
 // import mongoose from "./config/middleware/mongoose.js";
 import mongoose from 'mongoose';
 const PORT = process.env.PORT || 3000
+const HOST = process.env.HOST || 'localhost'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -23,7 +26,7 @@ const __dirname = path.dirname(__filename)
 const app = express()
 
 const CorsOptions = {
-  origin: 'localhost:5173',
+  origin: 'http://127.0.0.1:3000/',
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   allowedHeaders: '*',
   exposedHeaders: '*',
@@ -54,6 +57,9 @@ app.use('/', express.static(path.join(__dirname, '../public')))
 app.use('/', express.static(path.join(__dirname, '../src')))
 
 
+
+
+
 mongoose
   .connect(process.env.MONGO_DB, {
     dbName: process.env.DB_NAME,
@@ -65,6 +71,7 @@ mongoose
 
 passport(app);
 app.use(routes)
+
 
 // app.get('/', async (req, res, next) => {
 //   // const movieData = await getMovies();
@@ -78,14 +85,14 @@ app.use(routes)
 // })
 
 
-app.get("*", (req, res, next) => {
+// app.get("*", (req, res, next) => {
 
-  let err = new Error(`${req.ip} tried to reach ${req.originalUrl}`); // Tells us which IP tried to reach a particular URL
-  err.statusCode = 404;
-  err.shouldRedirect = true;
-  console.log(err) //New property on err so that our middleware will redirect
-  next();
-});
+//   let err = new Error(`${req.ip} tried to reach ${req.originalUrl}`); // Tells us which IP tried to reach a particular URL
+//   err.statusCode = 404;
+//   err.shouldRedirect = true;
+//   console.log(err) //New property on err so that our middleware will redirect
+//   next();
+// });
 
 app.use((req, res, next) => {
   // Make `user` and `authenticated` available in templates
@@ -96,13 +103,33 @@ app.use((req, res, next) => {
 
 app.use( (err, req, res, next) => {
   res.status(err.status || 500);
-  // res.render("error.liquid", {
-  //   layout: "base.liquid",
-  //   message: err.message,
-  //   error: err.status,
-  // });
+  res.render("error", {
+    layout: "base.liquid",
+    message: err.message,
+    error: err.status,
+  });
 });
 
-ViteExpress.listen(app, PORT, () => {
-  console.log(`Server is listening on port ${PORT}...`)
-})
+
+
+const server = http.createServer(app).listen(PORT,"0.0.0.0", () => {
+  console.log(`Server is listening on host: ${HOST} @ ${PORT}!`);
+});
+
+const io = new Server(server, {
+  cors: {
+    origin: `${HOST}:${PORT}`,
+    methods: ['GET', 'POST'],
+  },
+});
+
+
+ViteExpress.config({ viteConfigFile: path.join(__dirname, '../vite.config.js')});
+
+console.log(path.join(__dirname, '../vite.config.js'))
+
+ViteExpress.bind(app, io);
+
+// ViteExpress.listen(app, PORT, () => {
+//   console.log(`Server is listening on port ${PORT}...`)
+// })

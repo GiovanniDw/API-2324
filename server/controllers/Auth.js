@@ -111,14 +111,14 @@ export const doRegister = async (req, res, next) => {
           data.message = err
 
           // res.render('register.liquid', data);
-          res.send(renderTemplate('views/register.liquid', data))
+          res.render('register', data)
         } else {
           req.login(user, (er) => {
             if (er) {
               data.succes = false
               data.message = er
               // res.render('register.liquid', data);
-              res.send(renderTemplate('views/register.liquid', data))
+              res.render('register', data)
             } else {
               res.redirect('/')
             }
@@ -140,17 +140,15 @@ export const login = async (req, res, next) => {
     message: ''
   }
   try {
-    res.render('login', data)
+     res.render('login', data)
   } catch (err) {
     let data = {
       error: { message: err },
       layout: 'base.liquid'
     }
-    res.render('login', data)
-    
-  } finally {
-    next()
-  }
+    // res.render('login', data)
+    next(err)
+  } 
 }
 
 export const doLogin = async (req, res, next) => {
@@ -179,11 +177,11 @@ export const doLogin = async (req, res, next) => {
               console.log(er)
               data.succes = false
               data.error = 'Email not found'
-              res.render('login.liquid', data)
+              res.render('login', data)
             } else {
               console.log('req.login')
               console.log(req.login)
-              res.redirect('/course/start')
+              res.redirect('/')
             }
           })
         }

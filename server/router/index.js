@@ -8,19 +8,19 @@ import {
   doLogin,
   logout,
 } from "../controllers/Auth.js";
+
+import multer from "multer";
+const upload = multer();
 const router = express.Router();
 
 router.get("/", homeController);
 
 
 router.get("/register", register);
-router.post("/register", doRegister);
+router.post("/register", upload.array(), doRegister);
 
 router.get("/login", login);
-router.post("/login", doLogin);
-
-router.get("/register", register);
-router.post("/register", doRegister);
+router.post("/login", upload.array(), doLogin);
 
 router.get("/logout", logout);
 router.post("/logout", logout);

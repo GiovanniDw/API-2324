@@ -4,6 +4,7 @@ import 'dotenv/config'
 import express from 'express'
 import session from 'express-session'
 import ViteExpress from 'vite-express'
+import bodyParser from "body-parser";
 import cors from 'cors'
 import http from 'http'
 import path from 'node:path'
@@ -26,7 +27,7 @@ const __dirname = path.dirname(__filename)
 const app = express()
 
 const CorsOptions = {
-  origin: 'http://127.0.0.1:3000/',
+  origin: 'http://localhost:5173/',
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   allowedHeaders: '*',
   exposedHeaders: '*',
@@ -43,19 +44,32 @@ const engine = new Liquid({
 //   console.log(`Server is listeningon ${PORT}!`);
 // });
 
-app.engine('liquid', engine.express())
-app.set('views', path.join(__dirname, './views')) // specify the views directory
-app.set('view engine', 'liquid') // set liquid to default
+app.use(ViteExpress.static())
 app.use(logger("dev"));
+app.set("trust proxy", ["loopback", "linklocal", "uniquelocal"]);
 app.use(cors(CorsOptions))
 // app.use(sessionMiddleware);
 // app.use(cookieParser())
 app.options('*', cors(CorsOptions))
+
+
+app.engine('liquid', engine.express())
+app.set('views', path.join(__dirname, './views')) // specify the views directory
+app.set('view engine', 'liquid') // set liquid to default
+
 app.use(express.json())
 
 app.use('/', express.static(path.join(__dirname, '../public')))
 app.use('/', express.static(path.join(__dirname, '../src')))
+app.use(bodyParser.json());
 
+
+app.use(
+  bodyParser.urlencoded({
+    extended: true,
+    credentials: true,
+  })
+);
 
 
 
@@ -63,10 +77,8 @@ app.use('/', express.static(path.join(__dirname, '../src')))
 mongoose
   .connect(process.env.MONGO_DB, {
     dbName: process.env.DB_NAME,
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
   })
-  .then(() => console.log('Mongoose connected'))
+  .then(() => console.log(`Mongoose connected to ${process.env.MONGO_DB} `))
   .catch((err) => console.log(err));
 
 passport(app);
@@ -124,11 +136,15 @@ const io = new Server(server, {
 });
 
 
-ViteExpress.config({ viteConfigFile: path.join(__dirname, '../vite.config.js')});
+// ViteExpress.config({ viteConfigFile: path.join(__dirname, '../vite.config.js')});
 
 console.log(path.join(__dirname, '../vite.config.js'))
 
-ViteExpress.bind(app, io);
+ViteExpress.bind(app, io, async () => {
+  const { root, base } = await ViteExpress.getViteConfig();
+  console.log(`Serving app from root ${root}`);
+  console.log(`Server is listening at http://${HOST}:${PORT}${base}`);
+});
 
 // ViteExpress.listen(app, PORT, () => {
 //   console.log(`Server is listening on port ${PORT}...`)

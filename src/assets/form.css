@@ -30,7 +30,8 @@ form label {
 
 input[type="text"],
 input[type="email"],
-input[type="number"] {
+input[type="number"],
+input[type="password"] {
   /* height: 2em; */
   padding: .75em;
   font-size: 1em;

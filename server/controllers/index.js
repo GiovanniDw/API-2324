@@ -5,7 +5,7 @@ export const homeController = async (req, res, next) => {
   const { username, email, password, name, id } = req.body;
 
   try {
-    const data = { title: 'Movies', movieData: 'data' }
+    const data = { title: 'Movies', movieData: 'data', user: req.user }
   // const render = renderTemplate('index.liquid', data);
 
   console.log(data)
@@ -16,8 +16,6 @@ export const homeController = async (req, res, next) => {
       error: { message: err }
     };
     
-    return res.send(renderTemplate('views/index.liquid', data));
-  } finally {
-    next();
+    res.render('index', data);
   }
 };

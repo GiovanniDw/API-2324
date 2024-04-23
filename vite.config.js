@@ -9,10 +9,10 @@ const __dirname = path.dirname(__filename);
 
 export default defineConfig({
   appType: "custom",
-  base: "./",
+  base: "/",
   resolve: {
     alias: {
-      '~': path.resolve(__dirname, './src'),
+      '~': fileURLToPath(new URL("./src", import.meta.url)),
       '~~': path.resolve(__dirname, './'),
       '@': path.resolve(__dirname, './server'),
     },
@@ -53,7 +53,7 @@ export default defineConfig({
     manifest: true,
     ssrManifest: true,
     rollupOptions: {
-      input: './src/main.js',
+      input: path.resolve(__dirname, 'src/main.js'),
     }
   },
 },({ command, mode }) => {

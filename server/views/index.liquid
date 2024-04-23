@@ -1,6 +1,6 @@
 {% layout "views/base.liquid" %} {% block content %}
 
-<div>hallo</div>
+<div>hallo {{ user }} </div>
 <ul class="grid">
   {% for movie in movieData.results %} 
     {% if movie.original_title %} 

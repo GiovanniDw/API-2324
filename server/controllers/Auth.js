@@ -71,7 +71,8 @@ export const register = async (req, res, next) => {
   try {
     let data = {
       layout: 'base.liquid',
-      title: 'Welcome'
+      title: 'Welcome',
+      error: null
     }
 
     res.render('register', data)
@@ -82,12 +83,15 @@ export const register = async (req, res, next) => {
     }
     res.render('register', data)
     // res.render('register.liquid', data);
-    next()
+    next(err)
   }
 }
 
 export const doRegister = async (req, res, next) => {
   const { username, email, password, name, id } = req.body
+
+console.log(req.body)
+
   let data = {
     layout: 'base.liquid',
     title: 'Welcome',
@@ -97,12 +101,13 @@ export const doRegister = async (req, res, next) => {
   }
 
   try {
+    console.log(req.body)
     await User.register(
       new User({
         username: req.body.username,
         email: req.body.username,
+        password: req.body.password,        
         name: req.body.name,
-        id: id
       }),
       username,
       function (err, user) {

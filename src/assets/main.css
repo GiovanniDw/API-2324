@@ -32,15 +32,13 @@ main {
   margin-inline: auto;
 }
 
-
-
 header {
   width: 100%;
   /* position: sticky; */
   /* top: 0; */
   height: 3.5em;
   display: flex;
-  padding: .5em 3em;
+  padding: 0.5em 3em;
   justify-content: space-between;
 }
 

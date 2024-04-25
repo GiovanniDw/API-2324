@@ -1,5 +1,5 @@
 import passport from 'passport'
-import jwt from 'jsonwebtoken';
+import jwt from 'jsonwebtoken'
 
 import { renderTemplate } from '../utils.js'
 import User from '../models/User.js'
@@ -7,93 +7,87 @@ import User from '../models/User.js'
 // import jwt from 'passport-jwt';
 // import { Error } from 'mongoose';
 
-const maxAge = 24 * 60 * 60;
+const maxAge = 24 * 60 * 60
 
 const createJWT = (id) => {
   return jwt.sign({ id }, 'chatroom secret', {
-    expiresIn: maxAge, // in token expiration, calculate by second
-  });
-};
+    expiresIn: maxAge // in token expiration, calculate by second
+  })
+}
 
 const alertError = (err) => {
-  let errors = { name: '', email: '', password: '' };
-  console.log('err message', err.message);
-  console.log('err code', err.code);
+  let errors = { name: '', email: '', password: '' }
+  console.log('err message', err.message)
+  console.log('err code', err.code)
 
   if (err.message === 'Incorrect email') {
-    errors.email = 'This email not found!';
+    errors.email = 'This email not found!'
   }
   if (err.message === 'Incorrect password') {
-    errors.password = 'The password is incorrect!';
+    errors.password = 'The password is incorrect!'
   }
   if (err.code === 11000) {
-    errors.email = 'This email already registered';
-    return errors;
+    errors.email = 'This email already registered'
+    return errors
   }
   if (err.message.includes('User validation failed')) {
     Object.values(err.errors).forEach(({ properties }) => {
-      errors[properties.path] = properties.message;
-    });
+      errors[properties.path] = properties.message
+    })
   }
-  return errors;
-};
+  return errors
+}
 
-export const signinup = async (req,res,next) => {
-  let { username, password } = req.body;
+export const signinup = async (req, res, next) => {
+  let { username, password } = req.body
   try {
     let userExists = await User.findByUsername(username)
 
     if (userExists) {
       let user = userExists
-      let token = createJWT(user._id);
-      console.log(token);
-      res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 });
+      let token = createJWT(user._id)
+      console.log(token)
+      res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 })
     } else {
-      
     }
 
-
     console.log(userExists)
-
-
   } catch (error) {
     console.log(error)
-    let errors = alertError(error);
+    let errors = alertError(error)
     console.log(errors)
   }
-  
-
 }
 
 export const newRegister = async (req, res) => {
-  console.log('reqbody 1');
-  console.log(req.body);
-  let { username, name, password } = req.body;
+  console.log('reqbody 1')
+  console.log(req.body)
+  let { username, name, password } = req.body
   try {
     let newUser = {
       username: username,
       name: name,
-      password: password,
-    };
-    console.log('newUser');
-    console.log(newUser);
+      password: password
+    }
+    console.log('newUser')
+    console.log(newUser)
 
-    let user = await User.create({ username, name, password });
-    console.log('user');
-    console.log(user);
+    let user = await User.create({ username, name, password })
+    console.log('user')
+    console.log(user)
 
-    let token = createJWT(user._id);
-    console.log('token');
-    console.log(token);
+    let token = createJWT(user._id)
+    console.log('token')
+    console.log(token)
     // create a cookie name as jwt and contain token and expire after 1 day
     // in cookies, expiration date calculate by milisecond
-    res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 });
-    res.status(201).json({ user });
+    res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 })
+    res.status(201).json({ user })
   } catch (error) {
-    let errors = alertError(error);
-    res.status(400).json({ errors });
+    let errors = alertError(error)
+    res.status(400).json({ errors })
   }
-};
+}
 
 export const register = async (req, res, next) => {
   try {
@@ -118,7 +112,7 @@ export const register = async (req, res, next) => {
 export const doRegister = async (req, res, next) => {
   const { username, email, password, name, id } = req.body
 
-console.log(req.body)
+  console.log(req.body)
 
   let data = {
     layout: 'base.liquid',
@@ -134,8 +128,8 @@ console.log(req.body)
       new User({
         username: req.body.username,
         email: req.body.username,
-        password: req.body.password,        
-        name: req.body.name,
+        password: req.body.password,
+        name: req.body.name
       }),
       username,
       function (err, user) {
@@ -164,23 +158,20 @@ console.log(req.body)
   }
 }
 
-
 export const newLogin = async (req, res) => {
-  let { username, password } = req.body;
+  let { username, password } = req.body
   try {
-    let user = await User.login(username, password);
-    let token = createJWT(user._id);
-    console.log('token');
-    console.log(token);
-    res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 });
-    res.status(201).json({ user });
+    let user = await User.login(username, password)
+    let token = createJWT(user._id)
+    console.log('token')
+    console.log(token)
+    res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 })
+    res.status(201).json({ user })
   } catch (error) {
-    let errors = alertError(error);
-    res.status(400).json({ errors });
+    let errors = alertError(error)
+    res.status(400).json({ errors })
   }
-};
-
-
+}
 
 export const login = async (req, res, next) => {
   const { username, email, password, name, id } = req.body
@@ -191,7 +182,7 @@ export const login = async (req, res, next) => {
     message: ''
   }
   try {
-     res.render('login', data)
+    res.render('login', data)
   } catch (err) {
     let data = {
       error: { message: err },
@@ -199,7 +190,7 @@ export const login = async (req, res, next) => {
     }
     // res.render('login', data)
     next(err)
-  } 
+  }
 }
 
 export const doLogin = async (req, res, next) => {
@@ -211,7 +202,7 @@ export const doLogin = async (req, res, next) => {
     layout: 'base.liquid',
     title: 'Welcome',
     error: null,
-    message: '',
+    message: ''
   }
   try {
     if (req.body.username) {
@@ -246,29 +237,27 @@ export const doLogin = async (req, res, next) => {
   }
 }
 
-
 export const verifyuser = async (req, res, next) => {
-  const token = req.cookies.jwt;
+  const token = req.cookies.jwt
   if (token) {
-    console.log('token');
-    console.log(token);
+    console.log('token')
+    console.log(token)
     jwt.verify(token, 'chatroom secret', async (err, decodedToken) => {
       if (err) {
-        console.log('error.msg');
-        console.log(err.message);
+        console.log('error.msg')
+        console.log(err.message)
       } else {
-        console.log('decodedToken.id');
-        console.log(decodedToken.id);
-        let user = await User.findById(decodedToken.id);
-        res.json(user);
-        next();
+        console.log('decodedToken.id')
+        console.log(decodedToken.id)
+        let user = await User.findById(decodedToken.id)
+        res.json(user)
+        next()
       }
-    });
+    })
   } else {
-    next();
+    next()
   }
-};
-
+}
 
 export const logout = (req, res, next) => {
   req.logout((err) => {

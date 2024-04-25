@@ -65,7 +65,35 @@ export const signinup = async (req,res,next) => {
 
 }
 
+export const newRegister = async (req, res) => {
+  console.log('reqbody 1');
+  console.log(req.body);
+  let { username, name, password } = req.body;
+  try {
+    let newUser = {
+      username: username,
+      name: name,
+      password: password,
+    };
+    console.log('newUser');
+    console.log(newUser);
 
+    let user = await User.create({ username, name, password });
+    console.log('user');
+    console.log(user);
+
+    let token = createJWT(user._id);
+    console.log('token');
+    console.log(token);
+    // create a cookie name as jwt and contain token and expire after 1 day
+    // in cookies, expiration date calculate by milisecond
+    res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 });
+    res.status(201).json({ user });
+  } catch (error) {
+    let errors = alertError(error);
+    res.status(400).json({ errors });
+  }
+};
 
 export const register = async (req, res, next) => {
   try {
@@ -136,6 +164,24 @@ console.log(req.body)
   }
 }
 
+
+export const newLogin = async (req, res) => {
+  let { username, password } = req.body;
+  try {
+    let user = await User.login(username, password);
+    let token = createJWT(user._id);
+    console.log('token');
+    console.log(token);
+    res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 });
+    res.status(201).json({ user });
+  } catch (error) {
+    let errors = alertError(error);
+    res.status(400).json({ errors });
+  }
+};
+
+
+
 export const login = async (req, res, next) => {
   const { username, email, password, name, id } = req.body
   let data = {
@@ -199,6 +245,30 @@ export const doLogin = async (req, res, next) => {
     next(error)
   }
 }
+
+
+export const verifyuser = async (req, res, next) => {
+  const token = req.cookies.jwt;
+  if (token) {
+    console.log('token');
+    console.log(token);
+    jwt.verify(token, 'chatroom secret', async (err, decodedToken) => {
+      if (err) {
+        console.log('error.msg');
+        console.log(err.message);
+      } else {
+        console.log('decodedToken.id');
+        console.log(decodedToken.id);
+        let user = await User.findById(decodedToken.id);
+        res.json(user);
+        next();
+      }
+    });
+  } else {
+    next();
+  }
+};
+
 
 export const logout = (req, res, next) => {
   req.logout((err) => {

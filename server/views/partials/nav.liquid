@@ -1,4 +1,13 @@
 <nav>
   <div class="nav-start icon"><img src="/apple-icon.png" alt=""></div>
-  <div class="nav-end"><a href="/login">Login</a> <a href="/register">Register</a> </div>
+  {% if user.name %}
+  <div class="nav-end">
+    <a href="/account">Account</a>
+  </div>
+  {% else %}
+  <div class="nav-end">
+    <a href="/login">Login</a>
+    <a href="/register">Register</a>
+  </div>
+  {% endif %}
 </nav>

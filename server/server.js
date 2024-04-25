@@ -18,6 +18,7 @@ import routes from './router/index.js'
 import passport from "./config/passport.js";
 // import mongoose from "./config/middleware/mongoose.js";
 import mongoose from 'mongoose';
+import { socketController } from './controllers/Socket.js';
 const PORT = process.env.PORT || 3000
 const HOST = process.env.HOST || 'localhost'
 
@@ -134,6 +135,10 @@ const io = new Server(server, {
     methods: ['GET', 'POST'],
   },
 });
+
+io.on('connection', (socket) => {
+  socketController(io, socket)
+})
 
 
 // ViteExpress.config({ viteConfigFile: path.join(__dirname, '../vite.config.js')});

@@ -1,7 +1,8 @@
 import express from 'express'
 
 import { homeController } from '../controllers/index.js'
-import { register, doRegister, login, doLogin, logout } from '../controllers/Auth.js'
+import { chatController } from '../controllers/Chat.js'
+import { register, doRegister, login, doLogin, logout, verifyuser } from '../controllers/Auth.js'
 
 import multer from 'multer'
 const upload = multer()
@@ -17,5 +18,10 @@ router.post('/login', upload.array(), doLogin)
 
 router.get('/logout', logout)
 router.post('/logout', logout)
+
+router.get('/verifyuser', verifyuser);
+router.post('/verifyuser', verifyuser);
+
+router.get('/chat', chatController)
 
 export default router

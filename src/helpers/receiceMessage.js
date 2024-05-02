@@ -1,7 +1,5 @@
-export const $ = (e) => document.querySelector(e)
-export const $$ = (e) => document.querySelectorAll(e)
-
-import { getState, setState } from '~/state.js';
+import { $ } from '~/helpers/variables.js';
+import { getState } from '~/state.js';
 
 export const receiveMessage = (obj) => {
   const { user } = getState();
@@ -37,21 +35,4 @@ export const receiveMessage = (obj) => {
     left: 0,
     behavior: 'smooth',
   });
-};
-
-
-export const verifyUser = async () => {
-  try {
-    const res = await fetch('/verifyuser', {
-      credentials: 'include',
-      headers: { 'Content-Type': 'application/json' },
-    });
-    const data = await res.json();
-    console.log('verify');
-    console.log(data);
-
-    setState({ user: data });
-  } catch (error) {
-    console.log(error);
-  }
 };

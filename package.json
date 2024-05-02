@@ -5,7 +5,7 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "dev": "nodemon --inspect server/server.js -w server/ views/",
+    "dev": "nodemon --inspect server/server.js -w server/ server/views",
     "devOld": "NODE_ENV=development npm-run-all --parallel dev:*",
     "dev:server": "nodemon server.js --ext js,liquid",
     "dev:client": "vite --config vite.config.js",
@@ -16,14 +16,11 @@
     "lint": "eslint . --ext .js,.liquid",
     "format": "prettier --write src/ server/"
   },
-  "_moduleAliases": {
-    "@": "./server",
-    "~": "./src"
-  },
   "dependencies": {
     "@tinyhttp/app": "^2.2.3",
     "@tinyhttp/logger": "^2.0.0",
-    "vite": "^5.2.10",
+    "socket.io-client": "^4.7.5",
+    "vite": "^5.2.11",
     "vite-plugin-eslint": "^1.8.1"
   },
   "devDependencies": {
@@ -37,9 +34,8 @@
     "express": "^4.19.2",
     "express-session": "^1.18.0",
     "jsonwebtoken": "^9.0.2",
-    "liquidjs": "^10.11.1",
-    "module-alias": "^2.2.3",
-    "mongoose": "^8.3.2",
+    "liquidjs": "^10.12.0",
+    "mongoose": "^8.3.3",
     "morgan": "^1.10.0",
     "multer": "1.4.5-lts.1",
     "nodemon": "^3.1.0",

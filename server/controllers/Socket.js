@@ -1,5 +1,6 @@
-import Room from './models/Room.js'
-
+import Room from '../models/Room.js'
+import Message from '../models/Message.js'
+import {addUser, getUser, removeUser} from '../utils.js';
 export const socketController = (io, socket) => {
   console.log('user connected')
   console.log('session')
@@ -63,13 +64,13 @@ export const socketController = (io, socket) => {
     })
   })
 
-  socket.on('drawing', (data) => {
-    console.log(data)
+  // socket.on('drawing', (data) => {
+  //   console.log(data)
 
-    // io.to(data.room_id).emit('drawing', data)
-    socket.broadcast.emit('drawing', data)
-    socket.emit('drawing', data)
-  })
+  //   // io.to(data.room_id).emit('drawing', data)
+  //   socket.broadcast.emit('drawing', data)
+  //   socket.emit('drawing', data)
+  // })
 
   socket.on('get-messages-history', (room_id) => {
     Message.find({ room_id }).then((result) => {

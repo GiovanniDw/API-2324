@@ -182,7 +182,14 @@ export const login = async (req, res, next) => {
     message: ''
   }
   try {
-    res.render('login', data)
+
+    if (req.user) {
+    res.redirect('/')
+    } else {
+      res.render('login', data)
+    }
+
+    
   } catch (err) {
     let data = {
       error: { message: err },

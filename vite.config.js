@@ -12,7 +12,7 @@ export default defineConfig({
   base: "/",
   resolve: {
     alias: {
-      '~': fileURLToPath(new URL("./src", import.meta.url)),
+      '~': "./src",
       '~~': path.resolve(__dirname, './'),
       '@': path.resolve(__dirname, './server'),
     },
@@ -35,13 +35,13 @@ export default defineConfig({
   server: {
     port: 3000,
     host: 'localhost',
-    origin: 'http://0.0.0.0:3000',
+    origin: 'http://127.0.0.1:3000',
     hmr: true,
     proxy: {
       // Proxying websockets or socket.io: ws://localhost:5173/socket.io -> ws://localhost:5174/socket.io
       '/socket.io': {
         target: 'http://localhost:3000',
-        ws: false,
+        ws: true,
       },
     },
   },
@@ -53,7 +53,7 @@ export default defineConfig({
     manifest: true,
     ssrManifest: true,
     rollupOptions: {
-      input: path.resolve(__dirname, 'src/main.js'),
+      input: './src/main.js',
     }
   },
 },({ command, mode }) => {

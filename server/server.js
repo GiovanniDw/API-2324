@@ -27,7 +27,7 @@ const __dirname = path.dirname(__filename)
 const app = express()
 
 const CorsOptions = {
-  origin: 'http://localhost:5173/',
+  origin: 'http://127.0.0.1:3000',
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   allowedHeaders: '*',
   exposedHeaders: '*',
@@ -77,6 +77,12 @@ mongoose
   .catch((err) => console.log(err))
 
 passport(app)
+
+app.use((req, res, next) => {
+  res.locals.env = process.env.NODE_ENV || 'development';
+  next();
+});
+
 app.use(routes)
 
 // app.get('/', async (req, res, next) => {
@@ -99,11 +105,17 @@ app.use(routes)
 //   next();
 // });
 
-app.use((req, res, next) => {
-  // Make `user` and `authenticated` available in templates
+app.use(async(req, res, next) => {
+try {
   res.locals.user = req.user
   res.locals.authenticated = !req.user.anonymous
-  next()
+} catch (error) {
+  next(error)
+}
+
+  // Make `user` and `authenticated` available in templates
+  
+  
 })
 
 app.use((err, req, res, next) => {

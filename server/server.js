@@ -27,7 +27,7 @@ const __dirname = path.dirname(__filename)
 const app = express()
 
 const CorsOptions = {
-  origin: 'http://127.0.0.1:3000',
+  origin: '*',
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   allowedHeaders: '*',
   exposedHeaders: '*',
@@ -53,7 +53,7 @@ app.use(cors(CorsOptions))
 app.options('*', cors(CorsOptions))
 
 app.engine('liquid', engine.express())
-app.set('views', path.join(__dirname, './views')) // specify the views directory
+app.set('views', [path.join(__dirname, './views'), path.join(__dirname, './views/partials')]) // specify the views directory
 app.set('view engine', 'liquid') // set liquid to default
 
 app.use(express.json())
@@ -155,3 +155,17 @@ ViteExpress.bind(app, io, async () => {
 // ViteExpress.listen(app, PORT, () => {
 //   console.log(`Server is listening on port ${PORT}...`)
 // })
+
+
+// if (process.env.NODE_ENV === 'development') {
+//   ViteExpress.listen(app, PORT, () => {
+//   console.log(__dirname)
+//   console.log(`Server is listening on port ${PORT}...`)
+// 	});
+// }
+// if (process.env.NODE_ENV === 'production') {
+// 	app.listen(PORT, () => {
+// 		console.log(__dirname);
+// 		console.log(`Server is listening on port ${PORT}...`);
+// 	});
+// }

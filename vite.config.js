@@ -33,7 +33,7 @@ export default defineConfig({
     target: 'node'
   },
   server: {
-    port: 3000,
+    port: 5173,
     host: 'localhost',
     origin: 'http://127.0.0.1:3000',
     hmr: true,

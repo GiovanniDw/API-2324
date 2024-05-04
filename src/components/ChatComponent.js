@@ -7,7 +7,7 @@ import '@/css/chat.scss';
 
 import { $, $$ } from '@/helpers/variables';
 // import { LoginModal, modalTemplate } from '@/components/modal';
-import { addObserver, getState, setState } from '@/state.js';
+import { addObserver, getState, setState } from '~/state.js';
 import { receiveMessage } from '~/helpers/receiceMessage';
 
 class ChatComponent extends HTMLElement {

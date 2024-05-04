@@ -1,10 +1,10 @@
-import "./assets/reset.css";
-import "./assets/base.css";
-import "./assets/main.css";
-import "./assets/form.css";
-
+// import "./assets/reset.css";
+// import "./assets/base.css";
+// import "./assets/main.css";
+// import "./assets/form.css";
+console.log('hallo');
 import Chat from './components/Chat.js';
-console.log('hallo')
+
 
 import { $, $$, receiveMessage } from './utils.js';
 import socket from './socket.js';

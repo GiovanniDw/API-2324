@@ -3,6 +3,7 @@
 <section class="form-container">
   <h3>Continue the Survey?</h3>
   <form action='/login' method="POST" enctype="multipart/form-data">
+  <div>Auth: is{{authenticated}}</div>
     <div id='register-error'>
       {% if error %}
       error{{ error }}

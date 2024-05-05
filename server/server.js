@@ -3,18 +3,25 @@ import 'dotenv/config'
 import express from 'express'
 import session from 'express-session'
 import ViteExpress from 'vite-express'
+
+import { createServer } from 'node:http';
+import { fileURLToPath } from 'node:url';
+import { dirname, join } from 'node:path';
+
 import bodyParser from 'body-parser'
 import cors from 'cors'
 import http from 'http'
 import path from 'node:path'
-import { fileURLToPath } from 'node:url'
 import { Liquid } from 'liquidjs'
 import logger from 'morgan'
 import { Server } from 'socket.io'
 
+
+
 import { renderTemplate } from './utils.js'
 import routes from './router/index.js'
 import passport from './config/passport.js'
+import {config} from './config/index.js';
 // import mongoose from "./config/middleware/mongoose.js";
 import mongoose from 'mongoose'
 import { socketController } from './controllers/Socket.js'
@@ -24,9 +31,33 @@ const HOST = process.env.HOST || 'localhost'
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
+const serverOptions = {
+  cors: {
+    origin: `${HOST}:${PORT}`,
+    methods: ['GET', 'POST']
+  }
+}
+
+
 const app = express()
 
-const CorsOptions = {
+
+// const server = http.createServer(app)
+
+
+const server = http.createServer(app).listen(PORT, '0.0.0.0', () => {
+  console.log(`Server.Listen`)
+  console.log(`Server is listening on host: ${HOST} @ ${PORT}!`)
+})
+
+
+const io = new Server(server)
+
+
+
+
+
+const corsOptions = {
   origin: '*',
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   allowedHeaders: '*',
@@ -44,13 +75,12 @@ const engine = new Liquid({
 //   console.log(`Server is listeningon ${PORT}!`);
 // });
 
-app.use(ViteExpress.static())
 app.use(logger('dev'))
 app.set('trust proxy', ['loopback', 'linklocal', 'uniquelocal'])
-app.use(cors(CorsOptions))
+app.use(cors(corsOptions))
 // app.use(sessionMiddleware);
 // app.use(cookieParser())
-app.options('*', cors(CorsOptions))
+app.options('*', cors(corsOptions))
 
 app.engine('liquid', engine.express())
 app.set('views', [path.join(__dirname, './views'), path.join(__dirname, './views/partials')]) // specify the views directory
@@ -76,7 +106,9 @@ mongoose
   .then(() => console.log(`Mongoose connected to ${process.env.MONGO_DB} `))
   .catch((err) => console.log(err))
 
-passport(app)
+// passport(app)
+config(app, io)
+
 
 app.use((req, res, next) => {
   res.locals.env = process.env.NODE_ENV || 'development';
@@ -105,7 +137,7 @@ app.use(routes)
 //   next();
 // });
 
-app.use(async(req, res, next) => {
+app.use( async (req, res, next) => {
 try {
   res.locals.user = req.user
   res.locals.authenticated = !req.user.anonymous
@@ -121,33 +153,35 @@ try {
 app.use((err, req, res, next) => {
   res.status(err.status || 500)
   res.render('error', {
-    layout: 'base.liquid',
     message: err.message,
     error: err.status
   })
 })
 
-const server = http.createServer(app).listen(PORT, '0.0.0.0', () => {
-  console.log(`Server is listening on host: ${HOST} @ ${PORT}!`)
-})
 
-const io = new Server(server, {
-  cors: {
-    origin: `${HOST}:${PORT}`,
-    methods: ['GET', 'POST']
-  }
-})
+// app.use(ViteExpress.static())
 
-io.on('connection', (socket) => {
+
+io.on('connection', async (socket) => {
   socketController(io, socket)
 })
 
+config(app, io)
+
 // ViteExpress.config({ viteConfigFile: path.join(__dirname, '../vite.config.js')});
 
-console.log(path.join(__dirname, '../vite.config.js'))
+
+
+// server.listen(PORT, '0.0.0.0', () => {
+//   console.log(`Server.Listen`)
+//   console.log(`Server is listening on host: ${HOST} @ ${PORT}!`)
+// })
+
 
 ViteExpress.bind(app, io, async () => {
+  console.log(`Vite Express Bind`)
   const { root, base } = await ViteExpress.getViteConfig()
+  console.log(`Vite Express Bind`)
   console.log(`Serving app from root ${root}`)
   console.log(`Server is listening at http://${HOST}:${PORT}${base}`)
 })

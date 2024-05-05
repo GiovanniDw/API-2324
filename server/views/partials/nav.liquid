@@ -1,16 +1,19 @@
 <nav>
-  <div class="nav-start icon"><img src="/apple-icon.png" alt=""></div>
+  <div class="nav-start icon"><a href="/"><img src="/apple-icon.png" alt=""></a></div>
   {% if user %}
   <div class="nav-end">
     <div>USER: is{{user}}</div>
+    <div>Auth: is{{authenticated}}</div>
     <a href="/chat">chat</a>
   </div>
   {% else %}
+  <div>Auth: is{{authenticated}}</div>
   <div>USER:{{user.name}}</div>
   <div class="nav-end">
     <a href="/login">Login</a>
     <a href="/register">Register</a>
   </div>
+  <div>Auth: is{{authenticated}}</div>
   <div>USER: is true {{user}}</div>
   {% endif %}
 </nav>

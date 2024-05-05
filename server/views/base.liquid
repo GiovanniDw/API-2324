@@ -29,8 +29,8 @@
   <body>
     {% render './partials/nav.liquid' %}
     {% block content %} {% endblock %}
-    <script type="module" crossorigin="anonymous" src="http://localhost:5173/@vite/client"></script>
-    <script type="module" src="/main.js" defer></script>
+    {% comment %} <script type="module" crossorigin="anonymous" src="http://localhost:5173/@vite/client" defer></script> {% endcomment %}
+    <script type="module" crossorigin="anonymous" src="http://localhost:5173/src/main.js" defer></script>
   </body>
 
 </html>

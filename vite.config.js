@@ -12,12 +12,12 @@ export default defineConfig({
   base: "/",
   resolve: {
     alias: {
-      '~': "./src",
+      '~': fileURLToPath(new URL("./src", import.meta.url)),
       '~~': path.resolve(__dirname, './'),
       '@': path.resolve(__dirname, './server'),
     },
   },
-  plugins: [commonjs()],
+  plugins: [commonjs(),],
   optimizeDeps: {exclude: ["fsevents"]},
   publicDir: './public',
   css: {
@@ -29,14 +29,9 @@ export default defineConfig({
   preview: {
     port: 8080,
   },
-  ssr: {
-    target: 'node'
-  },
   server: {
     port: 5173,
-    host: 'localhost',
     origin: 'http://127.0.0.1:3000',
-    hmr: true,
     proxy: {
       // Proxying websockets or socket.io: ws://localhost:5173/socket.io -> ws://localhost:5174/socket.io
       '/socket.io': {
@@ -45,13 +40,17 @@ export default defineConfig({
       },
     },
   },
+  ssr: {
+    target: "node"
+  },
   build: {
     outDir: 'build',
-    assetsDir: 'assets',
+    assetsDir: './src/assets',
     sourcemap: true,
     minify: false,
     manifest: true,
     ssrManifest: true,
+    modulePreload: {polyfill: true},
     rollupOptions: {
       input: './src/main.js',
     }

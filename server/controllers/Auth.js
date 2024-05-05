@@ -186,14 +186,14 @@ export const login = async (req, res, next) => {
     if (req.user) {
     res.redirect('/')
     } else {
-      res.render('login', data)
+      res.render('login.njk', data)
     }
 
     
   } catch (err) {
     let data = {
       error: { message: err },
-      layout: 'base.liquid'
+      layout: 'base.njk'
     }
     // res.render('login', data)
     next(err)
@@ -206,7 +206,7 @@ export const doLogin = async (req, res, next) => {
   console.log(req.login)
 
   let data = {
-    layout: 'base.liquid',
+    layout: 'base.njk',
     title: 'Welcome',
     error: null,
     message: ''
@@ -219,7 +219,7 @@ export const doLogin = async (req, res, next) => {
           console.log(err)
           data.succes = false
           data.error = err
-          res.render('login', data)
+          res.render('login.njk', data)
         } else {
           req.login(user, (er) => {
             if (er) {
@@ -236,10 +236,10 @@ export const doLogin = async (req, res, next) => {
         }
       })
     } else {
-      res.render('login', data)
+      res.render('login.njk', data)
     }
   } catch (error) {
-    res.render('login', data)
+    res.render('login.njk', data)
     next(error)
   }
 }

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    {% block head %}
+    <title>API | Giovanni</title>
+    <meta name="author" content="Giovanni Dwidjosewojo">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel='stylesheet' href='/assets/base.css'>
+    <link rel='stylesheet' href='/assets/main.css'>
+    <link rel='stylesheet' href='/assets/form.css'>
+    {% endblock %}
+    <script type="module" crossorigin="anonymous" src="http://127.0.0.1:3000/@vite/client" defer></script>
+    <script type="module" crossorigin="anonymous" src="http://127.0.0.1:3000/main.js" defer></script>
+    {% if NODE_ENV == "development" %}
+    
+    {% else %}
+    <link rel="stylesheet" href="./assets/main.css" />
+    <script type="module" src="./main.js" defer></script>
+    <script type="nomodule" src="/polyfills-legacy.js" defer></script>
+    <script type="nomodule" src="/main-legacy.js" defer></script>
+    {% endif %}
+    {% block styles %}
+    {% endblock %}
+    {% block scripts %}
+    {% endblock %}
+  </head>
+
+  <body>
+    {% include './partials/nav.njk' %}
+    {% block content %} {% endblock %}
+    {# <script type="module" crossorigin="anonymous" src="http://localhost:5173/@vite/client" defer></script> #}
+    <script type="module" crossorigin="anonymous" src="http://localhost:5173/src/main.js" defer></script>
+  </body>
+
+</html>

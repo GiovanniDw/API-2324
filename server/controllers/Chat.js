@@ -16,6 +16,6 @@ export const chatController = async (req, res, next) => {
       error: { message: err }
     }
 
-    res.render('chat', data)
+    res.render('chat.njk', data)
   }
 }

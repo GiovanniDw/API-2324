@@ -1,0 +1,31 @@
+{% extends "base.njk" %} {% block content %}
+
+<div class="chat-container">
+      <div id="message-groups">
+        {% if user %}
+      <p>user {{ user.name }}</p>
+    {% endif %}
+        <h2>Rooms</h2>
+        <div id='rooms-list'></div>
+        <form id="create-room-form" action="">
+          <label for="new-room-name">Create Room</label>
+          <div class="input-group">
+            <input id="new-room-name" type="text" placeholder="room name" />
+            <button type='submit'>Create Room</button>
+          </div>
+        </form>
+      </div>
+      <draw-component id="draw-component"></draw-component>
+      <div class="message-container">
+        <div class="message-list-container">
+          <ul class="message-list">
+            <li class='message alert'>Please Select or Create a room to chat in</li>
+          </ul>
+        </div>
+        <form id="message-form">
+          <input id="message-input" placeholder="your message" type="text" />
+        </form>
+      </div>
+  </div>
+
+{% endblock %}

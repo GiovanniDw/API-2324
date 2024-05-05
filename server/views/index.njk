@@ -1,0 +1,21 @@
+{% extends "./base.njk" %} {% block content %}
+<div>hallo {{ userI }}, <br/> running on {{env}} </div>
+<ul class="grid">
+  {% for movie in movieData.results %} 
+    {% if movie.original_title %} 
+      {% set mov = movie.original_title %} 
+      {% else %}
+  {% set mov = movie.name %} {% endif %}
+  <li>
+    <a href="/movie/{{ movie.id }}">
+      {# {% render 'components/poster/poster.liquid' , movie: movie %}
+      
+      <pre>{{ movie | json }}</pre> #}
+      
+      <img src="https://image.tmdb.org/t/p/w500/{{ movie.backdrop_path }}" alt="" />
+
+    </a>
+  </li>
+  {% endfor %}
+</ul>
+{% endblock %}

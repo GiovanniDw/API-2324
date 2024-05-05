@@ -16,7 +16,8 @@ import { Liquid } from 'liquidjs'
 import logger from 'morgan'
 import { Server } from 'socket.io'
 
-
+import nunjucks from "nunjucks";
+import expressNunjucks from "express-nunjucks";
 
 import { renderTemplate } from './utils.js'
 import routes from './router/index.js'
@@ -68,7 +69,8 @@ const corsOptions = {
 
 const engine = new Liquid({
   root: __dirname, // for layouts and partials
-  extname: '.liquid'
+  extname: '.liquid',
+  globals: {data: 'global'}
 })
 
 // const server = http.createServer(app).listen(PORT,"0.0.0.0", () => {
@@ -82,9 +84,19 @@ app.use(cors(corsOptions))
 // app.use(cookieParser())
 app.options('*', cors(corsOptions))
 
-app.engine('liquid', engine.express())
-app.set('views', [path.join(__dirname, './views'), path.join(__dirname, './views/partials')]) // specify the views directory
-app.set('view engine', 'liquid') // set liquid to default
+// app.engine('liquid', engine.express())
+// app.set('views', [path.join(__dirname, './views'), path.join(__dirname, './views/partials')]) // specify the views directory
+// app.set('view engine', 'liquid') // set liquid to default
+
+
+app.set("view engine", "njk");
+app.set("views", path.join(__dirname, "views"));
+
+const njk = expressNunjucks(app, {
+  loader: nunjucks.FileSystemLoader,
+});
+
+
 
 app.use(express.json())
 
@@ -106,8 +118,8 @@ mongoose
   .then(() => console.log(`Mongoose connected to ${process.env.MONGO_DB} `))
   .catch((err) => console.log(err))
 
-// passport(app)
-config(app, io)
+passport(app)
+// config(app, io)
 
 
 app.use((req, res, next) => {
@@ -137,22 +149,16 @@ app.use(routes)
 //   next();
 // });
 
-app.use( async (req, res, next) => {
-try {
+app.use((req, res, next) => {
+  // Make `user` and `authenticated` available in templates
   res.locals.user = req.user
   res.locals.authenticated = !req.user.anonymous
-} catch (error) {
-  next(error)
-}
-
-  // Make `user` and `authenticated` available in templates
-  
-  
+  next()
 })
 
 app.use((err, req, res, next) => {
   res.status(err.status || 500)
-  res.render('error', {
+  res.render('error.njk', {
     message: err.message,
     error: err.status
   })
@@ -161,12 +167,13 @@ app.use((err, req, res, next) => {
 
 // app.use(ViteExpress.static())
 
+config(app, io)
 
 io.on('connection', async (socket) => {
   socketController(io, socket)
 })
 
-config(app, io)
+
 
 // ViteExpress.config({ viteConfigFile: path.join(__dirname, '../vite.config.js')});
 

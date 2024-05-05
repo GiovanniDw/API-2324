@@ -1,7 +1,5 @@
 {% layout "views/base.liquid" %} {% block content %}
-
-<div>hallo {{ user }}, running on {{env}} </div>
-<div>Auth: is{{authenticated}}</div>
+<div>hallo {{ userI }}, <br/> running on {{env}} </div>
 <ul class="grid">
   {% for movie in movieData.results %} 
     {% if movie.original_title %} 

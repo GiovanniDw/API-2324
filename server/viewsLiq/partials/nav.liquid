@@ -1,8 +1,12 @@
 <nav>
   <div class="nav-start icon"><a href="/"><img src="/apple-icon.png" alt=""></a></div>
-  {% if user %}
+  {% assign username = user.username %}
+{{ username }} fhu43iwe
+  <div>USER: is{{user[username]}}</div>
+  <div>USERNAME: is{{username}}</div>
+  {% if user  %}
   <div class="nav-end">
-    <div>USER: is{{user}}</div>
+    <div>USER: is{{username}}</div>
     <div>Auth: is{{authenticated}}</div>
     <a href="/chat">chat</a>
   </div>

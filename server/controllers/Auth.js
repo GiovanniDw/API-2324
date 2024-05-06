@@ -11,7 +11,7 @@ const maxAge = 24 * 60 * 60
 
 const createJWT = (id) => {
   return jwt.sign({ id }, 'chatroom secret', {
-    expiresIn: maxAge // in token expiration, calculate by second
+    expiresIn: maxAge, // in token expiration, calculate by second
   })
 }
 
@@ -67,7 +67,7 @@ export const newRegister = async (req, res) => {
     let newUser = {
       username: username,
       name: name,
-      password: password
+      password: password,
     }
     console.log('newUser')
     console.log(newUser)
@@ -94,14 +94,14 @@ export const register = async (req, res, next) => {
     let data = {
       layout: 'base.liquid',
       title: 'Welcome',
-      error: null
+      error: null,
     }
 
     res.render('register', data)
   } catch (err) {
     let data = {
       error: { message: err },
-      layout: 'base.liquid'
+      layout: 'base.liquid',
     }
     res.render('register', data)
     // res.render('register.liquid', data);
@@ -119,7 +119,7 @@ export const doRegister = async (req, res, next) => {
     title: 'Welcome',
     error: null,
     message: '',
-    succes: ''
+    succes: '',
   }
 
   try {
@@ -129,7 +129,7 @@ export const doRegister = async (req, res, next) => {
         username: req.body.username,
         email: req.body.username,
         password: req.body.password,
-        name: req.body.name
+        name: req.body.name,
       }),
       username,
       function (err, user) {
@@ -179,21 +179,18 @@ export const login = async (req, res, next) => {
     layout: 'base.liquid',
     title: 'Welcome',
     error: null,
-    message: ''
+    message: '',
   }
   try {
-
     if (req.user) {
-    res.redirect('/')
+      res.redirect('/')
     } else {
       res.render('login.njk', data)
     }
-
-    
   } catch (err) {
     let data = {
       error: { message: err },
-      layout: 'base.njk'
+      layout: 'base.njk',
     }
     // res.render('login', data)
     next(err)
@@ -209,7 +206,7 @@ export const doLogin = async (req, res, next) => {
     layout: 'base.njk',
     title: 'Welcome',
     error: null,
-    message: ''
+    message: '',
   }
   try {
     if (req.body.username) {

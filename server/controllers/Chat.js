@@ -1,7 +1,6 @@
 import Room from '../models/Room.js'
 import Message from '../models/Message.js'
 
-
 export const chatController = async (req, res, next) => {
   const { username, email, password, name, id } = req.body
 
@@ -13,7 +12,7 @@ export const chatController = async (req, res, next) => {
     res.render('chat', data)
   } catch (err) {
     let data = {
-      error: { message: err }
+      error: { message: err },
     }
 
     res.render('chat.njk', data)

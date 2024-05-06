@@ -4,9 +4,9 @@ import express from 'express'
 import session from 'express-session'
 import ViteExpress from 'vite-express'
 
-import { createServer } from 'node:http';
-import { fileURLToPath } from 'node:url';
-import { dirname, join } from 'node:path';
+import { createServer } from 'node:http'
+import { fileURLToPath } from 'node:url'
+import { dirname, join } from 'node:path'
 
 import bodyParser from 'body-parser'
 import cors from 'cors'
@@ -16,13 +16,13 @@ import { Liquid } from 'liquidjs'
 import logger from 'morgan'
 import { Server } from 'socket.io'
 
-import nunjucks from "nunjucks";
-import expressNunjucks from "express-nunjucks";
+import nunjucks from 'nunjucks'
+import expressNunjucks from 'express-nunjucks'
 
 import { renderTemplate } from './utils.js'
 import routes from './router/index.js'
 import passport from './config/passport.js'
-import {config} from './config/index.js';
+import { config } from './config/index.js'
 // import mongoose from "./config/middleware/mongoose.js";
 import mongoose from 'mongoose'
 import { socketController } from './controllers/Socket.js'
@@ -35,42 +35,34 @@ const __dirname = path.dirname(__filename)
 const serverOptions = {
   cors: {
     origin: `${HOST}:${PORT}`,
-    methods: ['GET', 'POST']
-  }
+    methods: ['GET', 'POST'],
+  },
 }
-
 
 const app = express()
 
-
 // const server = http.createServer(app)
-
 
 const server = http.createServer(app).listen(PORT, '0.0.0.0', () => {
   console.log(`Server.Listen`)
   console.log(`Server is listening on host: ${HOST} @ ${PORT}!`)
 })
 
-
 const io = new Server(server)
-
-
-
-
 
 const corsOptions = {
   origin: '*',
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   allowedHeaders: '*',
   exposedHeaders: '*',
-  credentials: true
+  credentials: true,
   // optionsSuccessStatus: 204 // some legacy browsers (IE11, various SmartTVs) choke on 204
 }
 
 const engine = new Liquid({
   root: __dirname, // for layouts and partials
   extname: '.liquid',
-  globals: {data: 'global'}
+  globals: { data: 'global' },
 })
 
 // const server = http.createServer(app).listen(PORT,"0.0.0.0", () => {
@@ -88,15 +80,12 @@ app.options('*', cors(corsOptions))
 // app.set('views', [path.join(__dirname, './views'), path.join(__dirname, './views/partials')]) // specify the views directory
 // app.set('view engine', 'liquid') // set liquid to default
 
-
-app.set("view engine", "njk");
-app.set("views", path.join(__dirname, "views"));
+app.set('view engine', 'njk')
+app.set('views', path.join(__dirname, 'views'))
 
 const njk = expressNunjucks(app, {
   loader: nunjucks.FileSystemLoader,
-});
-
-
+})
 
 app.use(express.json())
 
@@ -107,13 +96,13 @@ app.use(bodyParser.json())
 app.use(
   bodyParser.urlencoded({
     extended: true,
-    credentials: true
+    credentials: true,
   })
 )
 
 mongoose
   .connect(process.env.MONGO_DB, {
-    dbName: process.env.DB_NAME
+    dbName: process.env.DB_NAME,
   })
   .then(() => console.log(`Mongoose connected to ${process.env.MONGO_DB} `))
   .catch((err) => console.log(err))
@@ -121,11 +110,10 @@ mongoose
 passport(app)
 // config(app, io)
 
-
 app.use((req, res, next) => {
-  res.locals.env = process.env.NODE_ENV || 'development';
-  next();
-});
+  res.locals.env = process.env.NODE_ENV || 'development'
+  next()
+})
 
 app.use(routes)
 
@@ -160,10 +148,9 @@ app.use((err, req, res, next) => {
   res.status(err.status || 500)
   res.render('error.njk', {
     message: err.message,
-    error: err.status
+    error: err.status,
   })
 })
-
 
 // app.use(ViteExpress.static())
 
@@ -173,17 +160,12 @@ io.on('connection', async (socket) => {
   socketController(io, socket)
 })
 
-
-
 // ViteExpress.config({ viteConfigFile: path.join(__dirname, '../vite.config.js')});
-
-
 
 // server.listen(PORT, '0.0.0.0', () => {
 //   console.log(`Server.Listen`)
 //   console.log(`Server is listening on host: ${HOST} @ ${PORT}!`)
 // })
-
 
 ViteExpress.bind(app, io, async () => {
   console.log(`Vite Express Bind`)
@@ -196,7 +178,6 @@ ViteExpress.bind(app, io, async () => {
 // ViteExpress.listen(app, PORT, () => {
 //   console.log(`Server is listening on port ${PORT}...`)
 // })
-
 
 // if (process.env.NODE_ENV === 'development') {
 //   ViteExpress.listen(app, PORT, () => {

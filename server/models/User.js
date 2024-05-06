@@ -10,10 +10,10 @@ const UserSchema = new Schema({
   username: {
     type: String,
     required: true,
-    unique: true
+    unique: true,
   },
   password: String,
-  admin: Boolean
+  admin: Boolean,
 })
 
 UserSchema.pre('save', async function (next) {

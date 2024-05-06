@@ -1,34 +1,32 @@
-const observers = new Set();
-let state = {
-
-}; // Initialize state object
+const observers = new Set()
+let state = {} // Initialize state object
 
 export function getState() {
   // if (Object.keys(state).length === 0 && sessionStorage.getItem('myState')) {
   //   state = JSON.parse(sessionStorage.getItem('myState'));
   // }
-  return state;
+  return state
 }
 
 export function setState(newState) {
   // let sessionState = JSON.parse(localStorage.getItem("state"));
   // console.log(sessionState);
-  
-  state = { ...state, ...newState };
+
+  state = { ...state, ...newState }
   // sessionStorage.setItem('myState', JSON.stringify(state));
-  notifyObservers(); // Merge new state with existing state
+  notifyObservers() // Merge new state with existing state
 }
 
 export function addObserver(observer) {
-  observers.add(observer);
+  observers.add(observer)
 }
 
 export function removeObserver(observer) {
-  observers.delete(observer);
+  observers.delete(observer)
 }
 
 function notifyObservers() {
   for (const observer of observers) {
-    observer(state);
+    observer(state)
   }
 }

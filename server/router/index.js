@@ -19,8 +19,8 @@ router.post('/login', upload.array(), doLogin)
 router.get('/logout', logout)
 router.post('/logout', logout)
 
-router.get('/verifyuser', verifyuser);
-router.post('/verifyuser', verifyuser);
+router.get('/verifyuser', verifyuser)
+router.post('/verifyuser', verifyuser)
 
 router.get('/chat', chatController)
 

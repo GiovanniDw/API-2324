@@ -3,8 +3,8 @@ const Schema = mongoose.Schema
 const RoomSchema = new Schema({
   name: {
     type: String,
-    required: true
-  }
+    required: true,
+  },
 })
 const Room = mongoose.model('Room', RoomSchema)
 

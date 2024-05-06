@@ -1,6 +1,6 @@
 import Room from '../models/Room.js'
 import Message from '../models/Message.js'
-import {addUser, getUser, removeUser} from '../utils.js';
+import { addUser, getUser, removeUser } from '../utils.js'
 export const socketController = (io, socket) => {
   console.log('user connected')
   console.log('session')
@@ -24,7 +24,7 @@ export const socketController = (io, socket) => {
       socket_id: socket.id,
       name,
       user_id,
-      room_id
+      room_id,
     })
     socket.join(room_id)
     if (error) {
@@ -47,7 +47,7 @@ export const socketController = (io, socket) => {
       name: user.name,
       user_id: user.user_id,
       room_id,
-      text: msg
+      text: msg,
     }
     console.log('messageStore')
     console.log(msgToStore)
@@ -56,7 +56,7 @@ export const socketController = (io, socket) => {
       user_id: user.user_id,
       room_id: room_id,
       text: msg,
-      alert: alert
+      alert: alert,
     })
 
     message.save().then((result) => {

@@ -5,6 +5,6 @@ export default () => {
   return mongoose.connect(process.env.MONGO_DB, {
     dbName: process.env.DB_NAME,
     useNewUrlParser: true,
-    useUnifiedTopology: true
+    useUnifiedTopology: true,
   })
 }

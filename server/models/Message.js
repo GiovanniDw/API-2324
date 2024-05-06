@@ -5,21 +5,21 @@ const MessageSchema = new Schema(
   {
     name: {
       type: String,
-      required: true
+      required: true,
     },
     user_id: {
       type: String,
-      required: true
+      required: true,
     },
     text: {
       type: String,
-      required: true
+      required: true,
     },
     room_id: {
       type: String,
-      required: true
+      required: true,
     },
-    alert: Boolean
+    alert: Boolean,
   },
   { timestamps: true }
 )

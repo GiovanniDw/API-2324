@@ -3,8 +3,6 @@ import { renderTemplate } from '../utils.js'
 export const homeController = async (req, res, next) => {
   const { username, email, password, name, id } = req.body
 
-
-
   try {
     if (req.user) {
       console.log(req.user)
@@ -20,12 +18,10 @@ export const homeController = async (req, res, next) => {
     res.render('index.njk', data)
   } catch (err) {
     let data = {
-      error: { message: err }
+      error: { message: err },
     }
 
     // res.send(renderTemplate('views/index.liquid', data));
     res.render('index.njk', data)
   }
 }
-
-

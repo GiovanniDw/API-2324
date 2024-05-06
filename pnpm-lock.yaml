@@ -78,6 +78,9 @@ importers:
       '@rushstack/eslint-patch':
         specifier: ^1.10.2
         version: 1.10.2
+      chokidar:
+        specifier: ^3.6.0
+        version: 3.6.0
       dotenv:
         specifier: ^16.4.5
         version: 16.4.5

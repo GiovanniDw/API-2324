@@ -44,6 +44,7 @@
   "devDependencies": {
     "@rollup/plugin-commonjs": "^25.0.7",
     "@rushstack/eslint-patch": "^1.10.2",
+    "chokidar": "^3.6.0",
     "dotenv": "^16.4.5",
     "eslint": "^8.57.0",
     "morgan": "^1.10.0",

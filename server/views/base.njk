@@ -10,10 +10,10 @@
     <link rel='stylesheet' href='/assets/main.css'>
     <link rel='stylesheet' href='/assets/form.css'>
     {% endblock %}
-    <script type="module" crossorigin="anonymous" src="http://127.0.0.1:3000/@vite/client" defer></script>
-    <script type="module" crossorigin="anonymous" src="http://127.0.0.1:3000/main.js" defer></script>
-    {% if NODE_ENV == "development" %}
-    
+    {# <script type="module" crossorigin="anonymous" src="http://127.0.0.1:3000/@vite/client" defer></script>
+    <script type="module" crossorigin="anonymous" src="http://127.0.0.1:3000/main.js" defer></script> #}
+    {% if env == "development" %}
+    <script type="module" crossorigin="anonymous" src="http://localhost:5173/src/main.js" defer></script>
     {% else %}
     <link rel="stylesheet" href="./assets/main.css" />
     <script type="module" src="./main.js" defer></script>
@@ -27,10 +27,15 @@
   </head>
 
   <body>
+    <div>Node env{{ env }}</div>
+<div>authenticated{{ authenticated }}</div>
+<div>user{{ user }}</div>
+
+
     {% include './partials/nav.njk' %}
     {% block content %} {% endblock %}
     {# <script type="module" crossorigin="anonymous" src="http://localhost:5173/@vite/client" defer></script> #}
-    <script type="module" crossorigin="anonymous" src="http://localhost:5173/src/main.js" defer></script>
+    
   </body>
 
 </html>

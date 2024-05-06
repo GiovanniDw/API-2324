@@ -32,6 +32,12 @@ const HOST = process.env.HOST || 'localhost'
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
+const paths = {
+  views: path.join(__dirname, 'views'),
+  public: path.join(__dirname, '../public'),
+  src: path.join(__dirname, '../src'),
+}
+
 const serverOptions = {
   cors: {
     origin: `${HOST}:${PORT}`,
@@ -65,6 +71,13 @@ const engine = new Liquid({
   globals: { data: 'global' },
 })
 
+const env = nunjucks.configure(paths.views, {
+  autoescape: true,
+  express: app,
+  watch: true,
+});
+
+env.express(app)
 // const server = http.createServer(app).listen(PORT,"0.0.0.0", () => {
 //   console.log(`Server is listeningon ${PORT}!`);
 // });
@@ -76,21 +89,28 @@ app.use(cors(corsOptions))
 // app.use(cookieParser())
 app.options('*', cors(corsOptions))
 
+
+
 // app.engine('liquid', engine.express())
 // app.set('views', [path.join(__dirname, './views'), path.join(__dirname, './views/partials')]) // specify the views directory
 // app.set('view engine', 'liquid') // set liquid to default
 
-app.set('view engine', 'njk')
-app.set('views', path.join(__dirname, 'views'))
 
-const njk = expressNunjucks(app, {
-  loader: nunjucks.FileSystemLoader,
-})
+
+
+
+
+app.set('view engine', 'njk')
+app.set('views', paths.views)
+
+// const njk = expressNunjucks(app, {
+//   loader: nunjucks.FileSystemLoader,
+// })
 
 app.use(express.json())
 
-app.use('/', express.static(path.join(__dirname, '../public')))
-app.use('/', express.static(path.join(__dirname, '../src')))
+app.use('/', express.static(paths.public))
+app.use('/', express.static(paths.src))
 app.use(bodyParser.json())
 
 app.use(
@@ -107,8 +127,9 @@ mongoose
   .then(() => console.log(`Mongoose connected to ${process.env.MONGO_DB} `))
   .catch((err) => console.log(err))
 
-passport(app)
+// passport(app)
 // config(app, io)
+config(app, io)
 
 app.use((req, res, next) => {
   res.locals.env = process.env.NODE_ENV || 'development'
@@ -154,7 +175,7 @@ app.use((err, req, res, next) => {
 
 // app.use(ViteExpress.static())
 
-config(app, io)
+// config(app, io)
 
 io.on('connection', async (socket) => {
   socketController(io, socket)

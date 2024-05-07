@@ -3250,7 +3250,7 @@ Object.assign(lookup, {
   io: lookup,
   connect: lookup
 });
-const URL = "http://localhost:3000";
+const URL = "https://api-2324-g23i.onrender.com";
 const socket = lookup(URL, {
   autoConnect: true,
   cors: "*"
@@ -3394,4 +3394,4 @@ Chat();
 socket.on("receive-message", receiveMessage);
 socket.on("receive-message", receiveMessage);
 console.log("end of app");
-//# sourceMappingURL=main-jIe3Neoh.js.map
+//# sourceMappingURL=main-Cs5sKnfa.js.map

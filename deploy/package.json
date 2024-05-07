@@ -6,17 +6,9 @@
   "type": "module",
   "packageManager": "pnpm@9.1.0",
   "engines.node": "22",
+  "main": "server.js",
   "scripts": {
-    "dev": "pnpm dev:client & pnpm dev:server",
-    "dev:server": "nodemon --inspect server/server.js -w server/ server/views",
-    "devOld": "NODE_ENV=development npm-run-all --parallel dev:*",
-    "dev:client": "vite --config vite.config.js",
-    "start": "NODE_ENV=production node server/server.js",
-    "build": "pnpm build:server && pnpm build:client",
-    "build:server": "vite build --ssr server/server.js",
-    "build:client": "vite build --emptyOutDir false --ssrManifest",
-    "lint": "eslint . --ext .js,.liquid",
-    "format": "prettier --write src/ server/"
+    "start": "NODE_ENV=production node server.js"
   },
   "dependencies": {
     "@tinyhttp/app": "^2.2.3",

@@ -424,7 +424,7 @@ const paths = {
 };
 const devPaths = {
   views: path.join(__dirname, "views"),
-  public: path.join(__dirname, "/"),
+  public: path.join(__dirname, "/public"),
   src: path.join(__dirname, "../src"),
   assets: path.join(__dirname, "assets")
 };

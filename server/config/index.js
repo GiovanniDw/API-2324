@@ -36,7 +36,7 @@ export const config = function (app, io) {
     // the user's activity to extend their session. If you want an absolute session
     // expiration, set to false
     rolling: true,
-    name: 'localhost',
+    name: process.env.HOST,
     // set your options for the session cookie
     cookie: {
       httpOnly: false,

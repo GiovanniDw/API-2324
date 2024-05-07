@@ -1,4 +1,4 @@
-import "dotenv/config";
+import dotenv from "dotenv";
 import express from "express";
 import session from "express-session";
 import ViteExpress from "vite-express";
@@ -11,7 +11,6 @@ import { Liquid } from "liquidjs";
 import logger from "morgan";
 import { Server } from "socket.io";
 import nunjucks from "nunjucks";
-import "express-nunjucks";
 import mongoose from "mongoose";
 import passport from "passport";
 import jwt from "jsonwebtoken";
@@ -412,6 +411,7 @@ const socketController = (io2, socket) => {
     console.log("user disconnected");
   });
 };
+dotenv.config();
 const PORT = process.env.PORT || 3e3;
 const HOST = process.env.HOST || "localhost";
 const __filename = fileURLToPath(import.meta.url);

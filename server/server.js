@@ -1,4 +1,5 @@
-import 'dotenv/config'
+import dotenv from 'dotenv'
+dotenv.config()
 
 import express from 'express'
 import session from 'express-session'
@@ -17,7 +18,6 @@ import logger from 'morgan'
 import { Server } from 'socket.io'
 
 import nunjucks from 'nunjucks'
-import expressNunjucks from 'express-nunjucks'
 
 import { renderTemplate } from './utils.js'
 import routes from './router/index.js'

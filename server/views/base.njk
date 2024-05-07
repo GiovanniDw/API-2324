@@ -5,17 +5,25 @@
     <title>API | Giovanni</title>
     <meta name="author" content="Giovanni Dwidjosewojo">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel='stylesheet' href='/assets/base.css'>
-    <link rel='stylesheet' href='/assets/main.css'>
-    <link rel='stylesheet' href='/assets/form.css'>
+    <link rel="manifest" crossorigin="" href="/app.webmanifest"/>
+    <link rel="apple-touch-icon" sizes="1024x1024" href="/apple-touch-icon.png"/>
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#fff"/>
+    <meta name="apple-mobile-web-app-title" content="API"/>
+    <meta name="application-name" content="API"/>
+    <meta name="msapplication-TileColor" content="#fff"/>
+    <meta name="theme-color" content="#ffffff"/>
     {% endblock %}
     {# <script type="module" crossorigin="anonymous" src="http://127.0.0.1:3000/@vite/client" defer></script>
     <script type="module" crossorigin="anonymous" src="http://127.0.0.1:3000/main.js" defer></script> #}
     {% if env == "development" %}
+    <link rel='stylesheet' href='/assets/base.css'>
+    <link rel='stylesheet' href='/assets/main.css'>
+    <link rel='stylesheet' href='/assets/form.css'>
     <script type="module" crossorigin="anonymous" src="http://localhost:5173/src/main.js" defer></script>
     {% else %}
     <link rel="stylesheet" href="/assets/main.css" />
     <script type="module" src="/assets/main.js" defer></script>
+    <script src="/socket.io/socket.io.js" defer></script>
     {# <script type="nomodule" src="/polyfills-legacy.js" defer></script>
     <script type="nomodule" src="/main-legacy.js" defer></script> #}
     {% endif %}

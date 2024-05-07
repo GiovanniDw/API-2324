@@ -1,0 +1,57 @@
+/* style.css */
+
+.mobile-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: #333; /* Change the background color as needed */
+  padding: 10px 0; /* Adjust padding as needed */
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1); /* Optional: Add a shadow */
+  z-index: 1000; /* Adjust z-index as needed */
+  padding-bottom: calc(env(safe-area-inset-bottom) + 20px); /* Add padding for safe area inset */
+
+}
+
+body {
+  padding-bottom: 50px /* Add padding for safe area inset */
+}
+
+.mobile-nav ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* Adjust the number of columns as needed */
+  gap: 10px; /* Adjust the gap between items as needed */
+  justify-items: center; /* Center items horizontally */
+}
+
+.mobile-nav li {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center items vertically */
+}
+
+.mobile-nav li a {
+  color: #fff; /* Change text color as needed */
+  text-decoration: none;
+  font-size: 14px; /* Adjust font size as needed */
+  margin-top: 5px; /* Adjust spacing between icon and text */
+}
+
+/* Styling for icons */
+.mobile-nav li i {
+  font-size: 24px; /* Adjust icon size as needed */
+}
+
+/* Optional: Change icon color */
+.mobile-nav li i {
+  color: #fff; /* Change icon color as needed */
+}
+
+/* Optional: Hover effect */
+.mobile-nav li a:hover {
+  color: #ffcc00; /* Change text color on hover as needed */
+}

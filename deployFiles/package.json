@@ -1,0 +1,48 @@
+{
+  "name": "api-2324",
+  "version": "1.0.0",
+  "description": "In dit vier weken durende vak zullen we de kracht van het web ervaren en kijken hoe we (mobiele) web apps kunnen maken die\nnet zo aantrekkelijk zijn als native mobiele apps.",
+  "license": "MIT",
+  "type": "module",
+  "packageManager": "pnpm@9.1.0",
+  "engines.node": "22",
+  "main": "server.js",
+  "scripts": {
+    "start": "NODE_ENV=production node server.js"
+  },
+  "dependencies": {
+    "@tinyhttp/app": "^2.2.3",
+    "@tinyhttp/logger": "^2.0.0",
+    "bcrypt": "^5.1.1",
+    "body-parser": "^1.20.2",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "express-nunjucks": "^3.1.2",
+    "express-session": "^1.18.0",
+    "jsonwebtoken": "^9.0.2",
+    "liquidjs": "^10.12.0",
+    "mongoose": "^8.3.3",
+    "multer": "1.4.5-lts.1",
+    "nunjucks": "^3.2.4",
+    "passport": "^0.7.0",
+    "passport-local": "^1.0.0",
+    "passport-local-mongoose": "^8.0.0",
+    "socket.io": "^4.7.5",
+    "socket.io-client": "^4.7.5",
+    "vite": "^5.2.11",
+    "vite-plugin-eslint": "^1.8.1"
+  },
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^25.0.7",
+    "@rushstack/eslint-patch": "^1.10.2",
+    "chokidar": "^3.6.0",
+    "dotenv": "^16.4.5",
+    "eslint": "^8.57.0",
+    "morgan": "^1.10.0",
+    "nodemon": "^3.1.0",
+    "npm-run-all": "^4.1.5",
+    "sirv": "^2.0.4",
+    "vite-express": "^0.16.0"
+  }
+}

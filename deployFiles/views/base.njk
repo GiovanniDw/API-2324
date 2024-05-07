@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
   <head>
     {% block head %}
     <title>API | Giovanni</title>
@@ -14,10 +15,10 @@
     {% if env == "development" %}
     <script type="module" crossorigin="anonymous" src="http://localhost:5173/src/main.js" defer></script>
     {% else %}
-    <link rel="stylesheet" href="/assets/main.css" />
-    <script type="module" src="/assets/main.js" defer></script>
-    {# <script type="nomodule" src="/polyfills-legacy.js" defer></script>
-    <script type="nomodule" src="/main-legacy.js" defer></script> #}
+    <link rel="stylesheet" href="./assets/main.css" />
+    <script type="module" src="./main.js" defer></script>
+    <script type="nomodule" src="/polyfills-legacy.js" defer></script>
+    <script type="nomodule" src="/main-legacy.js" defer></script>
     {% endif %}
     {% block styles %}
     {% endblock %}
@@ -26,9 +27,15 @@
   </head>
 
   <body>
+    <div>Node env{{ env }}</div>
+<div>authenticated{{ authenticated }}</div>
+<div>user{{ user }}</div>
+
+
     {% include './partials/nav.njk' %}
     {% block content %} {% endblock %}
     {# <script type="module" crossorigin="anonymous" src="http://localhost:5173/@vite/client" defer></script> #}
     {% include './partials/bottom-nav.njk' %}
   </body>
+
 </html>

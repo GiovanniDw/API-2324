@@ -36,7 +36,17 @@ const paths = {
   views: path.join(__dirname, 'views'),
   public: path.join(__dirname, '../public'),
   src: path.join(__dirname, '../src'),
+  assets: path.join(__dirname, '../src/assets'),
 }
+
+const devPaths = {
+  views: path.join(__dirname, 'views'),
+  public: path.join(__dirname, '/'),
+  src: path.join(__dirname, '../src'),
+  assets: path.join(__dirname, 'assets'),
+}
+
+
 
 const serverOptions = {
   cors: {
@@ -109,8 +119,20 @@ app.set('views', paths.views)
 
 app.use(express.json())
 
-app.use('/', express.static(paths.public))
-app.use('/', express.static(paths.src))
+
+
+if (process.env.NODE_ENV === 'development') {
+  app.use('/', express.static(paths.public))
+  app.use('/', express.static(paths.src))
+  app.use('/assets', express.static(paths.assets))
+}
+
+if (process.env.NODE_ENV === 'production') {
+  app.use('/', express.static(devPaths.public))
+  app.use('/assets', express.static(devPaths.assets))
+}
+
+
 app.use(bodyParser.json())
 
 app.use(
@@ -187,7 +209,7 @@ io.on('connection', async (socket) => {
 //   console.log(`Server.Listen`)
 //   console.log(`Server is listening on host: ${HOST} @ ${PORT}!`)
 // })
-
+if (process.env.NODE_ENV === 'development') {
 ViteExpress.bind(app, io, async () => {
   console.log(`Vite Express Bind`)
   const { root, base } = await ViteExpress.getViteConfig()
@@ -195,7 +217,7 @@ ViteExpress.bind(app, io, async () => {
   console.log(`Serving app from root ${root}`)
   console.log(`Server is listening at http://${HOST}:${PORT}${base}`)
 })
-
+}
 // ViteExpress.listen(app, PORT, () => {
 //   console.log(`Server is listening on port ${PORT}...`)
 // })

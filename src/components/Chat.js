@@ -1,20 +1,20 @@
 import socket from '../socket.js'
-// import '@/css/chat.scss';
+import '~/assets/chat.css';
 
 import { $, $$, receiveMessage } from '../utils.js'
 // import { LoginModal, modalTemplate } from '@/components/modal';
 import { addObserver, getState, setState } from '../state.js'
 
 export const Chat = () => {
-  const roomsList = this.querySelector('#rooms-list')
-  const createRoomForm = this.querySelector('#create-room-form')
-  const newRoomName = this.querySelector('#new-room-name')
+  const roomsList = $('#rooms-list')
+  const createRoomForm = $('#create-room-form')
+  const newRoomName = $('#new-room-name')
 
-  const messageForm = this.querySelector('#message-form')
-  const messageInput = this.querySelector('#message-input')
+  const messageForm = $('#message-form')
+  const messageInput = $('#message-input')
   const messageList = $('.message-list')
-  const messageListContainer = this.querySelector('.message-list-container')
-  const drawComponent = this.querySelector('draw-component')
+  const messageListContainer = $('.message-list-container')
+  const drawComponent = $('draw-component')
   createRoomForm.addEventListener('submit', function (e) {
     e.preventDefault()
     if (newRoomName.value) {
@@ -42,8 +42,8 @@ export const Chat = () => {
         messageList.innerHTML = ''
 
         setState({ room: room, messages: [] })
-        drawComponent.setAttribute('room', room)
-        drawComponent.setAttribute('user', user)
+        // drawComponent.setAttribute('room', room)
+        // drawComponent.setAttribute('user', user)
 
         socket.emit('join', { name: user.name, room_id, user_id: user._id })
         socket.emit('send-message', { msg: joinMsg, room_id: room_id, alert: true })

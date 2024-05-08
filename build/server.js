@@ -1,6 +1,5 @@
 import dotenv from "dotenv";
 import express from "express";
-import session from "express-session";
 import ViteExpress from "vite-express";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
@@ -17,7 +16,9 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import passportLocalMongoose from "passport-local-mongoose";
 import multer from "multer";
+import "express-session";
 import cookieParser from "cookie-parser";
+import session from "cookie-session";
 const __filename$1 = fileURLToPath(import.meta.url);
 const __dirname$1 = path.dirname(__filename$1);
 new Liquid({
@@ -43,6 +44,27 @@ const removeUser = (socket_id) => {
   }
 };
 const getUser = (socket_id) => users.find((user) => user.socket_id === socket_id);
+const paths$1 = {
+  views: path.join(__dirname$1, "views"),
+  public: path.join(__dirname$1, "public"),
+  src: path.join(__dirname$1, "src"),
+  assets: path.join(__dirname$1, "src/assets")
+};
+const devPaths = {
+  views: path.join(__dirname$1, "views"),
+  public: path.join(__dirname$1, "../public"),
+  src: path.join(__dirname$1, "../src"),
+  assets: path.join(__dirname$1, "assets")
+};
+const getPaths = () => {
+  let currentProcess = process.env.NODE_ENV;
+  if (currentProcess === "development") {
+    return devPaths;
+  }
+  if (currentProcess === "production") {
+    return paths$1;
+  }
+};
 const homeController = async (req, res, next) => {
   req.body;
   try {
@@ -416,23 +438,9 @@ const PORT = process.env.PORT || 3e3;
 const HOST = process.env.HOST || "localhost";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const paths = {
-  views: path.join(__dirname, "views"),
-  public: path.join(__dirname, "../public"),
-  src: path.join(__dirname, "../src"),
-  assets: path.join(__dirname, "../src/assets")
-};
-const devPaths = {
-  views: path.join(__dirname, "views"),
-  public: path.join(__dirname, "/public"),
-  src: path.join(__dirname, "../src"),
-  assets: path.join(__dirname, "assets")
-};
+const paths = getPaths();
 const app = express();
-const server = http.createServer(app).listen(PORT, "0.0.0.0", () => {
-  console.log(`Server.Listen`);
-  console.log(`Server is listening on host: ${HOST} @ ${PORT}!`);
-});
+const server = http.createServer(app);
 const io = new Server(server);
 const corsOptions = {
   origin: "*",
@@ -461,15 +469,9 @@ app.options("*", cors(corsOptions));
 app.set("view engine", "njk");
 app.set("views", paths.views);
 app.use(express.json());
-if (process.env.NODE_ENV === "development") {
-  app.use("/", express.static(paths.public));
-  app.use("/", express.static(paths.src));
-  app.use("/assets", express.static(paths.assets));
-}
-if (process.env.NODE_ENV === "production") {
-  app.use("/", express.static(devPaths.public));
-  app.use("/assets", express.static(devPaths.assets));
-}
+app.use("/", express.static(paths.public));
+app.use("/", express.static(paths.src));
+app.use("/assets", express.static(paths.assets));
 app.use(bodyParser.json());
 app.use(
   bodyParser.urlencoded({
@@ -510,4 +512,8 @@ if (process.env.NODE_ENV === "development") {
     console.log(`Server is listening at http://${HOST}:${PORT}${base}`);
   });
 }
+server.listen(PORT, "0.0.0.0", () => {
+  console.log(`Server.Listen`);
+  console.log(`Server is listening on host: ${HOST} @ ${PORT}!`);
+});
 //# sourceMappingURL=server.js.map

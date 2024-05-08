@@ -38,3 +38,29 @@ export const removeUser = (socket_id) => {
   }
 }
 export const getUser = (socket_id) => users.find((user) => user.socket_id === socket_id)
+
+
+export const paths = {
+  views: path.join(__dirname, 'views'),
+  public: path.join(__dirname, 'public'),
+  src: path.join(__dirname, 'src'),
+  assets: path.join(__dirname, 'src/assets'),
+}
+
+export const devPaths = {
+  views: path.join(__dirname, 'views'),
+  public: path.join(__dirname, '../public'),
+  src: path.join(__dirname, '../src'),
+  assets: path.join(__dirname, 'assets'),
+}
+
+
+export const getPaths = () => {
+let currentProcess = process.env.NODE_ENV;
+  if (currentProcess === 'development') {
+    return devPaths
+  } 
+  if (currentProcess === 'production') {
+    return paths
+  }
+}

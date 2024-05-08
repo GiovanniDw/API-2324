@@ -2,7 +2,6 @@ import dotenv from 'dotenv'
 dotenv.config()
 
 import express from 'express'
-import session from 'express-session'
 import ViteExpress from 'vite-express'
 
 import { createServer } from 'node:http'
@@ -19,7 +18,7 @@ import { Server } from 'socket.io'
 
 import nunjucks from 'nunjucks'
 
-import { renderTemplate } from './utils.js'
+import { renderTemplate, getPaths } from './utils.js'
 import routes from './router/index.js'
 import passport from './config/passport.js'
 import { config } from './config/index.js'
@@ -32,21 +31,21 @@ const HOST = process.env.HOST || 'localhost'
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
-const paths = {
-  views: path.join(__dirname, 'views'),
-  public: path.join(__dirname, '../public'),
-  src: path.join(__dirname, '../src'),
-  assets: path.join(__dirname, '../src/assets'),
-}
+const paths = getPaths()
 
-const devPaths = {
-  views: path.join(__dirname, 'views'),
-  public: path.join(__dirname, '/public'),
-  src: path.join(__dirname, '../src'),
-  assets: path.join(__dirname, 'assets'),
-}
+// const paths = {
+//   views: path.join(__dirname, 'views'),
+//   public: path.join(__dirname, '../public'),
+//   src: path.join(__dirname, '../src'),
+//   assets: path.join(__dirname, '../src/assets'),
+// }
 
-
+// const devPaths = {
+//   views: path.join(__dirname, 'views'),
+//   public: path.join(__dirname, '/public'),
+//   src: path.join(__dirname, '../src'),
+//   assets: path.join(__dirname, 'assets'),
+// }
 
 const serverOptions = {
   cors: {
@@ -59,10 +58,7 @@ const app = express()
 
 // const server = http.createServer(app)
 
-const server = http.createServer(app).listen(PORT, '0.0.0.0', () => {
-  console.log(`Server.Listen`)
-  console.log(`Server is listening on host: ${HOST} @ ${PORT}!`)
-})
+const server = http.createServer(app)
 
 const io = new Server(server)
 
@@ -85,7 +81,7 @@ const env = nunjucks.configure(paths.views, {
   autoescape: true,
   express: app,
   watch: true,
-});
+})
 
 env.express(app)
 // const server = http.createServer(app).listen(PORT,"0.0.0.0", () => {
@@ -99,16 +95,9 @@ app.use(cors(corsOptions))
 // app.use(cookieParser())
 app.options('*', cors(corsOptions))
 
-
-
 // app.engine('liquid', engine.express())
 // app.set('views', [path.join(__dirname, './views'), path.join(__dirname, './views/partials')]) // specify the views directory
 // app.set('view engine', 'liquid') // set liquid to default
-
-
-
-
-
 
 app.set('view engine', 'njk')
 app.set('views', paths.views)
@@ -119,19 +108,9 @@ app.set('views', paths.views)
 
 app.use(express.json())
 
-
-
-if (process.env.NODE_ENV === 'development') {
-  app.use('/', express.static(paths.public))
-  app.use('/', express.static(paths.src))
-  app.use('/assets', express.static(paths.assets))
-}
-
-if (process.env.NODE_ENV === 'production') {
-  app.use('/', express.static(devPaths.public))
-  app.use('/assets', express.static(devPaths.assets))
-}
-
+app.use('/', express.static(paths.public))
+app.use('/', express.static(paths.src))
+app.use('/assets', express.static(paths.assets))
 
 app.use(bodyParser.json())
 
@@ -210,14 +189,20 @@ io.on('connection', async (socket) => {
 //   console.log(`Server is listening on host: ${HOST} @ ${PORT}!`)
 // })
 if (process.env.NODE_ENV === 'development') {
-ViteExpress.bind(app, io, async () => {
-  console.log(`Vite Express Bind`)
-  const { root, base } = await ViteExpress.getViteConfig()
-  console.log(`Vite Express Bind`)
-  console.log(`Serving app from root ${root}`)
-  console.log(`Server is listening at http://${HOST}:${PORT}${base}`)
-})
+  ViteExpress.bind(app, io, async () => {
+    console.log(`Vite Express Bind`)
+    const { root, base } = await ViteExpress.getViteConfig()
+    console.log(`Vite Express Bind`)
+    console.log(`Serving app from root ${root}`)
+    console.log(`Server is listening at http://${HOST}:${PORT}${base}`)
+  })
 }
+
+server.listen(PORT, '0.0.0.0', () => {
+  console.log(`Server.Listen`)
+  console.log(`Server is listening on host: ${HOST} @ ${PORT}!`)
+})
+
 // ViteExpress.listen(app, PORT, () => {
 //   console.log(`Server is listening on port ${PORT}...`)
 // })

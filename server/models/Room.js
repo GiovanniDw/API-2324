@@ -7,7 +7,7 @@ const RoomSchema = new Schema({
   },
   description: {
     type: String,
-  }
+  },
 })
 const Room = mongoose.model('Room', RoomSchema)
 

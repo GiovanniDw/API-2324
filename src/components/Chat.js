@@ -1,5 +1,5 @@
 import socket from '../socket.js'
-import '~/assets/chat.css';
+import '~/assets/chat.css'
 
 import { $, $$, receiveMessage } from '../utils.js'
 // import { LoginModal, modalTemplate } from '@/components/modal';

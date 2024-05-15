@@ -19,16 +19,15 @@ export const chatController = async (req, res, next) => {
   }
 }
 
-
 export const roomController = async (req, res, next) => {
   const { username, email, password, name, id, description } = req.body
 
   try {
-    const rooms = await Room.find();
-    const data = { 
+    const rooms = await Room.find()
+    const data = {
       user: req.user,
-      rooms: rooms
-     }
+      rooms: rooms,
+    }
     // const render = renderTemplate('index.liquid', data);
 
     console.log(data)

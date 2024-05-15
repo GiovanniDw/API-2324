@@ -10,11 +10,10 @@
   box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1); /* Optional: Add a shadow */
   z-index: 1000; /* Adjust z-index as needed */
   padding-bottom: calc(env(safe-area-inset-bottom) + 20px); /* Add padding for safe area inset */
-
 }
 
 body {
-  padding-bottom: 50px /* Add padding for safe area inset */
+  padding-bottom: 50px; /* Add padding for safe area inset */
 }
 
 .mobile-nav ul {

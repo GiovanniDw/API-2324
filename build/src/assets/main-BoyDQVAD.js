@@ -3250,7 +3250,7 @@ Object.assign(lookup, {
   io: lookup,
   connect: lookup
 });
-const URL = "https://api-2324-g23i.onrender.com";
+const URL = "http://localhost:3000";
 const socket = lookup(URL, {
   autoConnect: true,
   cors: "*"
@@ -3271,6 +3271,7 @@ function notifyObservers() {
 }
 const $ = (e) => document.querySelector(e);
 const $$ = (e) => document.querySelectorAll(e);
+const $id = (e) => document.getElementById(e);
 const receiveMessage = (obj) => {
   const { user } = getState();
   const currentUser = user;
@@ -3309,8 +3310,8 @@ const Chat = () => {
   const roomsList = $("#rooms-list");
   const createRoomForm = $("#create-room-form");
   const newRoomName = $("#new-room-name");
-  const messageForm = $("#message-form");
-  const messageInput = $("#message-input");
+  $("#message-form");
+  $("#message-input");
   const messageList = $(".message-list");
   $(".message-list-container");
   $("draw-component");
@@ -3358,20 +3359,26 @@ const Chat = () => {
       roomsList.appendChild(roomItem);
     });
   });
-  messageForm.addEventListener("submit", function(e) {
+};
+const Rooms = () => {
+  console.log("Rooms Loaded");
+  const showRoomsDialogButton = $(".show-dialog");
+  const closeRoomsDialogButton = $(".close-dialog");
+  const createRoomDialog = $id("createRoomDialog");
+  const createRoomForm = $("#create-room-form");
+  const newRoomName = $("#new-room-name");
+  showRoomsDialogButton.addEventListener("click", () => {
+    console.log("show modal");
+    createRoomDialog.showModal();
+  });
+  closeRoomsDialogButton.addEventListener("click", () => {
+    createRoomDialog.close();
+  });
+  createRoomForm.addEventListener("submit", function(e) {
     e.preventDefault();
-    if (messageInput.value) {
-      setState({ message: messageInput.value });
-      let { user, room } = getState();
-      let room_id = room._id;
-      let msg = messageInput.value;
-      ({
-        msg,
-        room_id: room._id
-      });
-      socket.emit("send-message", { msg, room_id });
-      setState({ message: "" });
-      messageInput.value = "";
+    if (newRoomName.value) {
+      socket.emit("create-room", newRoomName.value);
+      newRoomName.value = "";
     }
   });
 };
@@ -3390,8 +3397,9 @@ socket.on("connect_error", (err) => {
   console.log(err.description);
   console.log(err.context);
 });
+Rooms();
 Chat();
 socket.on("receive-message", receiveMessage);
 socket.on("receive-message", receiveMessage);
 console.log("end of app");
-//# sourceMappingURL=main-Cs5sKnfa.js.map
+//# sourceMappingURL=main-BoyDQVAD.js.map

@@ -86,6 +86,9 @@ const RoomSchema = new Schema$2({
   name: {
     type: String,
     required: true
+  },
+  description: {
+    type: String
   }
 });
 const Room = mongoose.model("Room", RoomSchema);
@@ -119,6 +122,23 @@ const chatController = async (req, res, next) => {
     const data = { user: req.user };
     console.log(data);
     res.render("chat", data);
+  } catch (err) {
+    let data = {
+      error: { message: err }
+    };
+    res.render("chat.njk", data);
+  }
+};
+const roomController = async (req, res, next) => {
+  req.body;
+  try {
+    const rooms = await Room.find();
+    const data = {
+      user: req.user,
+      rooms
+    };
+    console.log(data);
+    res.render("rooms.njk", data);
   } catch (err) {
     let data = {
       error: { message: err }
@@ -324,6 +344,7 @@ router.post("/logout", logout);
 router.get("/verifyuser", verifyuser);
 router.post("/verifyuser", verifyuser);
 router.get("/chat", chatController);
+router.get("/rooms", roomController);
 const config = function(app2, io2) {
   const wrap = (middleware) => (socket, next) => middleware(socket.request, {}, next);
   const cookieMiddleware = cookieParser(process.env.SESSION_SECRET);

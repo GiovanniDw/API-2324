@@ -67,23 +67,23 @@ export const Chat = () => {
     })
   })
 
-  messageForm.addEventListener('submit', function (e) {
-    e.preventDefault()
-    if (messageInput.value) {
-      setState({ message: messageInput.value })
-      let { user, room } = getState()
+  // messageForm.addEventListener('submit', function (e) {
+  //   e.preventDefault()
+  //   if (messageInput.value) {
+  //     setState({ message: messageInput.value })
+  //     let { user, room } = getState()
 
-      let room_id = room._id
-      let msg = messageInput.value
-      let messageObject = {
-        msg: msg,
-        room_id: room._id,
-      }
-      socket.emit('send-message', { msg: msg, room_id: room_id })
-      setState({ message: '' })
-      messageInput.value = ''
-    }
-  })
+  //     let room_id = room._id
+  //     let msg = messageInput.value
+  //     let messageObject = {
+  //       msg: msg,
+  //       room_id: room._id,
+  //     }
+  //     socket.emit('send-message', { msg: msg, room_id: room_id })
+  //     setState({ message: '' })
+  //     messageInput.value = ''
+  //   }
+  // })
 }
 
 export default Chat

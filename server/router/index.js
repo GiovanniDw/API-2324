@@ -1,7 +1,7 @@
 import express from 'express'
 
 import { homeController } from '../controllers/index.js'
-import { chatController } from '../controllers/Chat.js'
+import { chatController, roomController } from '../controllers/Chat.js'
 import { register, doRegister, login, doLogin, logout, verifyuser } from '../controllers/Auth.js'
 
 import multer from 'multer'
@@ -23,5 +23,6 @@ router.get('/verifyuser', verifyuser)
 router.post('/verifyuser', verifyuser)
 
 router.get('/chat', chatController)
+router.get('/rooms', roomController)
 
 export default router

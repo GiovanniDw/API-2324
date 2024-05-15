@@ -1,6 +1,8 @@
 export const $ = (e) => document.querySelector(e)
 export const $$ = (e) => document.querySelectorAll(e)
 
+export const $id = (e) => document.getElementById(e)
+
 import { getState, setState } from '~/state.js'
 
 export const receiveMessage = (obj) => {

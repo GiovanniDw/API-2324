@@ -131,8 +131,9 @@ ul.message-list {
 
 .input-group {
   display: flex;
+  flex-direction: column;
 }
 
 .input-group:first-child {
-  flex-grow: 2;
+  /* flex-grow: 0; */
 }

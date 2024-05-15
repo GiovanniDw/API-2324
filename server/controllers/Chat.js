@@ -18,3 +18,26 @@ export const chatController = async (req, res, next) => {
     res.render('chat.njk', data)
   }
 }
+
+
+export const roomController = async (req, res, next) => {
+  const { username, email, password, name, id, description } = req.body
+
+  try {
+    const rooms = await Room.find();
+    const data = { 
+      user: req.user,
+      rooms: rooms
+     }
+    // const render = renderTemplate('index.liquid', data);
+
+    console.log(data)
+    res.render('rooms.njk', data)
+  } catch (err) {
+    let data = {
+      error: { message: err },
+    }
+
+    res.render('chat.njk', data)
+  }
+}

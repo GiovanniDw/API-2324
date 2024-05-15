@@ -1,0 +1,16 @@
+<div>
+  <dialog id="createRoomDialog">
+    <form id="create-room-form" action="">
+      <h2>Your new Room</h2>
+      <div class="input-group">
+        <label for="new-room-name">Name</label>
+        <input id="new-room-name" type="text" placeholder="Room Name" />
+        <label for="new-room-description">Description</label>
+        <textarea id="new-room-description" type="text" placeholder="Your Room Description" ></textarea>
+      </div>
+      <button type="submit">Create Room</button>
+    </form>
+    <button class="close-dialog">Close</button>
+  </dialog>
+  <button class="show-dialog" onclick="createRoomDialog.showModal()">Add a Room</button>
+</div>

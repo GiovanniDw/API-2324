@@ -21,6 +21,9 @@
   /* Black w/ opacity */
 }
 
+
+
+
 /* Modal Content */
 .modal-content {
   background-color: #fefefe;
@@ -51,10 +54,23 @@
   border: 0;
   background: transparent;
   text-decoration: underline;
-
   appearance: none;
 }
 
 #register-container {
   display: none;
+}
+
+dialog {
+  position: relative;
+  width: 80%;
+  max-width: 600px;
+  top: 20%;
+  margin-inline: auto;
+}
+
+button.close-dialog {
+  position: absolute;
+  right: 0;
+  top: 0;
 }

@@ -5,6 +5,9 @@ const RoomSchema = new Schema({
     type: String,
     required: true,
   },
+  description: {
+    type: String,
+  }
 })
 const Room = mongoose.model('Room', RoomSchema)
 

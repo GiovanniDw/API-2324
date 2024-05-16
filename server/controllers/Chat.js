@@ -37,6 +37,6 @@ export const roomController = async (req, res, next) => {
       error: { message: err },
     }
 
-    res.render('chat.njk', data)
+    res.render('rooms.njk', data)
   }
 }

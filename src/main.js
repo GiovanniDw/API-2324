@@ -39,6 +39,4 @@ Chat()
 
 socket.on('receive-message', receiveMessage)
 
-socket.on('receive-message', receiveMessage)
-
 console.log('end of app')

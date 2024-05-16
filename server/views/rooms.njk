@@ -6,7 +6,7 @@
         {% include './partials/create-room.njk' %}
         <div id='rooms-list'>
           {% for room in rooms %}
-          <a href="">
+          <a href="/rooms/{{room.id}}">
             <div>
               <h3>{{ room }}</h3>
             </div>

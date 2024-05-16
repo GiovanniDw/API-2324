@@ -48,7 +48,7 @@ const paths$1 = {
   views: path.join(__dirname$1, "views"),
   public: path.join(__dirname$1, "public"),
   src: path.join(__dirname$1, "src"),
-  assets: path.join(__dirname$1, "src/assets")
+  assets: path.join(__dirname$1, "assets")
 };
 const devPaths = {
   views: path.join(__dirname$1, "views"),
